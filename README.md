@@ -6,6 +6,24 @@
 
 ---
 
+## 🎨 Design Files
+
+| Resource | Link |
+|---|---|
+| **Figma Design System & UI Screens** | [Open in Figma](https://www.figma.com/design/FRs2Qm4QZ1jTgN1Y8jcoXF) |
+| **Build Guide v17 (Final)** | [docs/angel-of-music-guide-v17-FINAL.md](docs/angel-of-music-guide-v17-FINAL.md) |
+
+The Figma file contains:
+- 🎨 **Design System** — colour palette, typography, tokens
+- 🏛 **Navbar variants** — Guest, Fan, Designer, Admin (desktop + mobile)
+- 🏠 **Landing page** — hero, musical cards, Now Showing section
+- 🎭 **Archive page** — Phantom atmosphere, accordion gallery, sub-navbar, songs
+- 🗓 **Booking calendar** — availability filter chips, colour-coded performance cards
+- 🌹 **Tribute keepsake wall** — scattered ivory cards, crowned winner
+- ⚙️ **Admin dashboard** — occupancy bars, week chart, action queue
+
+---
+
 ## What this is
 
 Angel of Music has three pillars:
@@ -18,28 +36,7 @@ Angel of Music has three pillars:
 
 ## Project structure (to be scaffolded)
 
-```
-angel-of-music/
-├── backend/          # ASP.NET Core 8 Web API
-│   ├── Controllers/
-│   ├── Services/
-│   ├── Models/
-│   ├── DTOs/
-│   └── Data/
-├── frontend/         # Next.js App Router + TypeScript
-│   ├── app/
-│   ├── components/
-│   ├── styles/
-│   └── public/
-└── docs/             # Planning documents
-    └── angel-of-music-guide-v17-FINAL.md
-```
 
----
-
-## Build guide
-
-The full plan is in [`docs/angel-of-music-guide-v17-FINAL.md`](docs/angel-of-music-guide-v17-FINAL.md) — a single consolidated document covering data model, API, caching strategy, design system, motion language, and all build phases. Read it before writing any code.
 
 ---
 
@@ -55,7 +52,7 @@ The full plan is in [`docs/angel-of-music-guide-v17-FINAL.md`](docs/angel-of-mus
 
 ## Key decisions
 
-- **Next.js server components** for SEO and ISR caching (archive pages cached weekly, invalidated on admin edits)
+- **Next.js server components** for SEO and ISR caching (archive pages cached weekly + on-demand revalidation)
 - **One Admin** — no sub-admin hierarchy at this stage
 - **SignalR** for real-time (not Firebase) — same JWT, same SQL Server
 - **Fabric.js v6** for the canvas scrapbook editor
@@ -67,5 +64,5 @@ The full plan is in [`docs/angel-of-music-guide-v17-FINAL.md`](docs/angel-of-mus
 
 ## Status
 
-🎨 **Design phase complete** — see `docs/` for the full build guide  
+🎨 **Design phase complete** — Figma file linked above, HTML demos in 
 🏗️ **Implementation starting** — Phase 1: backend foundation
