@@ -9,9 +9,7 @@
 ## 🎨 Design Files
 
 | Resource | Link |
-|---|---|
-| **Live UI Prototypes (Claude Design)** | [View all screens ↓](#live-prototypes) |
-| **Figma (early wireframes, superseded)** | [Open in Figma](https://www.figma.com/design/FRs2Qm4QZ1jTgN1Y8jcoXF) |
+|---|---
 | **Build Guide v19 (Final)** | [docs/angel-of-music-guide-v19-FINAL.md](docs/angel-of-music-guide-v19-FINAL.md) |
 | **Implementation Notes (scrapbook spec — overrides guide §7)** | [docs/implementation-notes.md](docs/implementation-notes.md) |
 
