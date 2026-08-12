@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@keyframes aomSway{from{transform:translateX(-10px)}to{transform:translateX(10px)}}
+@keyframes aomRays{to{transform:rotate(360deg)}}
+@keyframes aomTwinkle{0%,100%{opacity:.15;transform:scale(.6)}50%{opacity:1;transform:scale(1.15)}}
+@keyframes aomBreathe{0%,100%{opacity:.55}50%{opacity:1}}
+@keyframes aomFloat{from{transform:translateY(0)}to{transform:translateY(-9px)}}
+@keyframes aomDrift{from{transform:translate(0,0) scale(1)}to{transform:translate(26px,-18px) scale(1.04)}}
+@keyframes aomDriftB{from{transform:scaleX(-1) translate(0,0)}to{transform:scaleX(-1) translate(22px,16px)}}
+@keyframes aomOrbit{from{transform:translate(0,0) rotate(-4deg)}to{transform:translate(-14px,-22px) rotate(5deg)}}
+@keyframes aomFly{from{transform:translate(0,0) rotate(-5deg)}to{transform:translate(-26px,-16px) rotate(6deg)}}
+@keyframes aomHover{from{transform:translateY(0) rotate(-2deg)}to{transform:translateY(-16px) rotate(3deg)}}
+@keyframes aomPad{from{transform:translate(0,0) rotate(0deg)}to{transform:translate(14px,-9px) rotate(-3deg)}}
+@keyframes aomFlicker{0%,100%{transform:translateY(0);filter:brightness(1.2) drop-shadow(0 0 26px rgba(255,214,140,.6)) drop-shadow(0 0 60px rgba(255,196,110,.3))}45%{transform:translateY(-5px);filter:brightness(1.34) drop-shadow(0 0 40px rgba(255,224,164,.85)) drop-shadow(0 0 82px rgba(255,200,120,.42))}70%{filter:brightness(1.24) drop-shadow(0 0 30px rgba(255,214,140,.66)) drop-shadow(0 0 66px rgba(255,196,110,.34))}}
+@keyframes aomTilt{from{transform:rotate(-7deg) translateY(0)}to{transform:rotate(2deg) translateY(-12px)}}
+@keyframes aomSheen{0%,100%{opacity:.25;transform:rotate(19deg) translateX(-12%)}50%{opacity:.75;transform:rotate(19deg) translateX(28%)}}
+@container (max-width: 900px){
+  [data-l="cards"]{grid-template-columns:1fr 1fr !important}
+  [data-l="hero"]{padding:18px 18px 34px !important}
+  [data-l="collage"]{aspect-ratio:834/820 !important}
+  [data-l="portrait"]{width:30% !important;top:5% !important}
+  [data-l="centre"]{width:76% !important;bottom:7% !important}
+  [data-l="collage"] img[alt="Painted hand fan"]{width:24% !important;right:-7% !important;top:34% !important}
+  [data-l="collage"] img[alt="Fan of playing cards"]{width:28% !important;right:4% !important}
+  [data-l="collage"] img[alt="Witch on a broom"]{width:14% !important;left:6% !important}
+  [data-l="collage"] img[alt="Sun and moon"]{width:14% !important;right:8% !important}
+  [data-l="collage"] img[alt="Candle"]{width:12% !important;left:5% !important}
+  [data-l="collage"] img[alt="Crystal ball"]{width:14% !important;left:22% !important}
+  [data-l="collage"] img[alt="Black cat"]{width:10% !important;right:33% !important}
+  [data-l="footcols"]{grid-template-columns:1fr 1fr !important}
+  [data-l="showrow"]{flex-wrap:wrap !important}
+}
+@container (max-width: 620px){
+  [data-l="cards"]{grid-template-columns:1fr !important}
+  [data-l="hero"]{padding:12px 12px 28px !important}
+  [data-l="collage"]{aspect-ratio:390/620 !important;border-radius:12px !important}
+  [data-l="portrait"]{width:44% !important;top:4% !important}
+  [data-l="centre"]{width:86% !important;bottom:6% !important}
+  [data-l="ctas"] a{width:100% !important}
+  [data-l="collage"] img[alt="Black cat"],[data-l="collage"] img[alt="Crystal ball"]{display:none !important}
+  [data-l="collage"] img[alt="Painted hand fan"]{width:34% !important;right:-12% !important;top:30% !important}
+  [data-l="collage"] img[alt="Fan of playing cards"]{width:40% !important;right:-6% !important;bottom:-2% !important;opacity:.5 !important}
+  [data-l="collage"] img[alt="Witch on a broom"]{width:20% !important;left:2% !important;top:3% !important}
+  [data-l="collage"] img[alt="Sun and moon"]{width:19% !important;right:2% !important;top:4% !important}
+  [data-l="collage"] img[alt="Candle"]{width:17% !important;left:2% !important;bottom:2% !important}
+  [data-l="footcols"]{grid-template-columns:1fr !important;gap:26px !important}
+  [data-l="month"]{flex-direction:column !important;text-align:center !important}
+  [data-l="showbtn"]{width:100% !important}
+  [data-l="divider"]{margin:40px auto !important}
+}
+</style>
+</helmet>
+<div style="container-type:inline-size;background:#100E0B;color:#F5F0E8;font-family:'Inter',sans-serif;font-weight:300;min-height:100%">
+  <dc-import name="SiteNav" style="position:sticky;top:0;z-index:95" onNavigate="{{ onNavigate }}" frameHeight="{{ frameHeight }}" hint-size="100%,96px"></dc-import>
+
+  <div data-l="hero" style="position:relative;padding:26px 26px 44px;overflow:hidden;background:#0C0A07">
+    <div data-l="collage" style="position:relative;width:100%;max-width:1300px;margin:0 auto;aspect-ratio:1300/800;border-radius:16px;overflow:hidden;background:radial-gradient(ellipse 52% 60% at 46% 46%,#2C2317,#191308 48%,#0A0806 100%);box-shadow:0 40px 110px rgba(0,0,0,.75)">
+
+      <div style="position:absolute;left:8%;top:-6%;width:46%;height:44%;transform:rotate(-2deg);background:repeating-linear-gradient(180deg,rgba(240,228,200,.11) 0 1px,transparent 1px 12px),linear-gradient(160deg,rgba(238,226,198,.07),transparent);-webkit-mask-image:linear-gradient(200deg,#000 34%,transparent 82%);mask-image:linear-gradient(200deg,#000 34%,transparent 82%)"></div>
+      <div style="position:absolute;right:-2%;top:52%;width:34%;height:40%;transform:rotate(6deg);background:linear-gradient(160deg,rgba(238,226,198,.09),transparent 70%);-webkit-mask-image:linear-gradient(120deg,#000 20%,transparent 80%);mask-image:linear-gradient(120deg,#000 20%,transparent 80%)"></div>
+      <div style="position:absolute;left:-6%;top:-10%;width:44%;height:24%;transform:rotate(-5deg);background:linear-gradient(178deg,#42101B 0%,#26080F 56%,rgba(20,10,10,0) 100%);-webkit-mask-image:radial-gradient(120% 100% at 34% 0%,#000 50%,transparent 84%);mask-image:radial-gradient(120% 100% at 34% 0%,#000 50%,transparent 84%);opacity:.7"></div>
+      <div style="position:absolute;left:0;top:0;bottom:0;width:9%;background:linear-gradient(90deg,#150E09,#1E140D 40%,rgba(16,14,11,0));box-shadow:inset -28px 0 66px rgba(0,0,0,.8)"></div>
+      <div style="position:absolute;right:0;top:0;bottom:0;width:7%;background:linear-gradient(270deg,#150E09,#1E140D 40%,rgba(16,14,11,0));box-shadow:inset 24px 0 60px rgba(0,0,0,.8)"></div>
+
+      <img src="assets/cut-cloud.png" alt="" style="position:absolute;left:-8%;top:-8%;width:52%;opacity:.4;filter:brightness(1.24) drop-shadow(0 0 34px rgba(217,201,163,.3)) blur(1px);animation:aomDrift 34s ease-in-out infinite alternate" />
+      <img src="assets/cut-witch.png" alt="Witch on a broom" style="position:absolute;left:19%;top:5%;width:11%;opacity:.72;filter:brightness(1.3) saturate(1.15) drop-shadow(0 0 20px rgba(244,229,184,.5));animation:aomFly 26s ease-in-out 1.5s infinite alternate" />
+      <img src="assets/cut-sunmoon.png" alt="Sun and moon" style="position:absolute;right:16%;top:7%;width:11.5%;opacity:.8;filter:brightness(1.32) saturate(1.2) drop-shadow(0 0 22px rgba(244,229,184,.6));animation:aomOrbit 30s ease-in-out infinite alternate" />
+      <img src="assets/cut-handfan.png" alt="Painted hand fan" style="position:absolute;right:-3%;top:30%;width:19%;transform:rotate(78deg);opacity:.8;filter:sepia(.16) brightness(1.06) drop-shadow(0 18px 36px rgba(0,0,0,.7)) drop-shadow(0 0 22px rgba(217,201,163,.28));animation:aomHover 28s ease-in-out 2s infinite alternate" />
+      <img src="assets/cut-candle.png" alt="Candle" style="position:absolute;left:11%;bottom:4%;width:9.5%;opacity:.95;animation:aomFlicker 10s ease-in-out .4s infinite" />
+      <img src="assets/cut-crystalball.png" alt="Crystal ball" style="position:absolute;left:26%;bottom:1%;width:11%;opacity:.86;filter:brightness(1.12) saturate(1.3) drop-shadow(0 0 28px rgba(196,168,220,.5));animation:aomHover 19s ease-in-out 3s infinite alternate" />
+      <img src="assets/cut-cardfan.png" alt="Fan of playing cards" style="position:absolute;right:9%;bottom:-3%;width:22%;transform:rotate(-11deg);opacity:.74;filter:sepia(.14) brightness(1.08) saturate(1.1) drop-shadow(0 18px 34px rgba(0,0,0,.7));animation:aomTilt 33s ease-in-out 4s infinite alternate" />
+      <img src="assets/cut-cat.png" alt="Black cat" style="position:absolute;right:30%;bottom:0;width:7.5%;opacity:.88;filter:brightness(1.22) drop-shadow(0 0 16px rgba(244,229,184,.45));animation:aomPad 30s ease-in-out 2.6s infinite alternate" />
+
+      <div data-l="portrait" style="position:absolute;left:50%;top:6%;width:22%;transform:translateX(-50%);z-index:5">
+        <div style="position:absolute;left:50%;top:44%;width:190%;aspect-ratio:1;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(244,229,184,.2),rgba(217,201,163,.06) 44%,transparent 70%);animation:aomBreathe 9s ease-in-out infinite;pointer-events:none"></div>
+        <img src="assets/portrait.png" alt="The Muse" style="position:relative;display:block;width:100%;filter:sepia(.16) contrast(1.04) drop-shadow(0 18px 40px rgba(0,0,0,.8)) drop-shadow(0 0 30px rgba(217,201,163,.24));-webkit-mask-image:linear-gradient(180deg,#000 76%,transparent 99%);mask-image:linear-gradient(180deg,#000 76%,transparent 99%)" />
+      </div>
+
+      <div data-l="centre" style="position:absolute;left:50%;bottom:9%;transform:translateX(-50%);width:min(600px,58%);display:flex;flex-direction:column;align-items:center;text-align:center;z-index:6">
+        <h1 data-l="title" style="font-family:'Cinzel Decorative',serif;font-weight:700;font-size:clamp(28px,3.9cqw,54px);line-height:1.08;letter-spacing:2px;text-transform:uppercase;background:linear-gradient(178deg,#FBF5E5 0%,#E4D6AE 44%,#A08A54 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 2px 4px rgba(0,0,0,.9)) drop-shadow(0 0 32px rgba(217,201,163,.42))">Angel of Music</h1>
+        <div style="display:flex;align-items:center;gap:12px;margin-top:12px;width:100%;max-width:340px">
+          <div style="flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(217,201,163,.6))"></div>
+          <span style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:5px;color:#D9C9A3;text-transform:uppercase;white-space:nowrap">The Home of Musicals</span>
+          <div style="flex:1;height:1px;background:linear-gradient(270deg,transparent,rgba(217,201,163,.6))"></div>
+        </div>
+        <p data-l="tag" style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(16px,1.6cqw,21px);color:#C6BCA6;margin-top:12px;text-shadow:0 2px 12px rgba(0,0,0,.95)">Where every curtain call lives forever.</p>
+        <div data-l="ctas" style="margin-top:22px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+          <a onClick="{{ goArchive }}" style="display:flex;align-items:center;justify-content:center;text-align:center;padding:13px 28px;font:500 11px 'Inter',sans-serif;letter-spacing:3px;text-transform:uppercase;text-decoration:none;cursor:pointer;white-space:nowrap;border-radius:8px;background:linear-gradient(135deg,#E4D6AE,#B79B62);color:#171204;box-shadow:0 2px 18px rgba(217,201,163,.24)" style-hover="box-shadow:0 4px 28px rgba(217,201,163,.4)">Explore the archive</a>
+          <a onClick="{{ goBooking }}" style="display:flex;align-items:center;justify-content:center;text-align:center;padding:13px 28px;font:500 11px 'Inter',sans-serif;letter-spacing:3px;text-transform:uppercase;text-decoration:none;cursor:pointer;white-space:nowrap;border-radius:8px;border:1px solid rgba(217,201,163,.4);color:#E4D6AE;background:rgba(10,8,6,.45)" style-hover="border-color:#E4D6AE">Now showing</a>
+        </div>
+      </div>
+
+      <div style="position:absolute;left:50%;bottom:0;width:74%;height:44%;transform:translateX(-50%);background:radial-gradient(ellipse 60% 70% at 50% 90%,rgba(10,8,6,.9) 30%,rgba(10,8,6,.5) 62%,transparent 84%);pointer-events:none"></div>
+      <div style="position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 82% 78% at 48% 46%,transparent 52%,rgba(6,5,4,.78) 100%)"></div>
+      <div style="position:absolute;inset:0;pointer-events:none;opacity:.4;mix-blend-mode:overlay;background-image:radial-gradient(rgba(255,248,230,.14) .5px,transparent .5px),radial-gradient(rgba(0,0,0,.18) .5px,transparent .5px);background-size:3px 3px,4px 4px;background-position:0 0,1px 2px"></div>
+      <div style="position:absolute;inset:0;pointer-events:none;border-radius:16px;box-shadow:inset 0 0 0 1px rgba(217,201,163,.2),inset 0 0 70px rgba(0,0,0,.55)"></div>
+    </div>
+  </div>
+
+  <div data-l="divider" style="display:flex;align-items:center;gap:14px;margin:56px auto;max-width:920px;padding:0 24px">
+    <svg width="14" height="10" viewBox="0 0 14 10" style="flex:none"><path d="M3 5 L6 2 L9 5 L6 8 Z M8 5 L11 2 L14 5 L11 8 Z" fill="#D9C9A3"></path></svg>
+    <div style="flex:1;height:1px;background:#D9C9A3;opacity:.6"></div>
+    <span style="font-size:12px;letter-spacing:5px;color:#D9C9A3">THE MUSICALS</span>
+    <div style="flex:1;height:1px;background:#D9C9A3;opacity:.6"></div>
+    <svg width="14" height="10" viewBox="0 0 14 10" style="flex:none"><path d="M0 5 L3 2 L6 5 L3 8 Z M5 5 L8 2 L11 5 L8 8 Z" fill="#D9C9A3"></path></svg>
+  </div>
+
+  <div style="max-width:1080px;margin:0 auto;padding:0 24px">
+    <div data-l="cards" style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px">
+      <div onClick="{{ goArchive }}" style="position:relative;height:320px;border:1px solid rgba(217,201,163,.25);border-radius:12px;overflow:hidden;cursor:pointer;transition:transform .3s,border-color .3s" style-hover="transform:translateY(-5px);border-color:#C9CFDD">
+        <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 30%,#2a3352,#0d1120)"></div>
+        <div style="position:absolute;inset:0;background:repeating-linear-gradient(135deg,rgba(201,207,221,.05) 0 8px,transparent 8px 16px)"></div>
+        <div style="position:absolute;top:14px;left:14px;font:400 9px ui-monospace,monospace;letter-spacing:1px;color:rgba(201,207,221,.5);border:1px solid rgba(201,207,221,.2);border-radius:8px;padding:4px 8px">poster art</div>
+        <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(10,14,23,.94))"></div>
+        <div style="position:absolute;bottom:0;left:0;right:0;padding:20px">
+          <span style="font-size:9px;letter-spacing:4px;color:#C9CFDD;text-transform:uppercase">Andrew Lloyd Webber's</span>
+          <h3 style="font-family:'Playfair Display',serif;font-weight:600;font-size:23px;margin-top:6px;text-wrap:pretty">The Phantom of the Opera</h3>
+        </div>
+      </div>
+      <div onClick="{{ goArchive }}" style="position:relative;height:320px;border:1px solid rgba(217,201,163,.25);border-radius:12px;overflow:hidden;cursor:pointer;transition:transform .3s,border-color .3s" style-hover="transform:translateY(-5px);border-color:#C94B5E">
+        <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 30%,#4a1d26,#150a0d)"></div>
+        <div style="position:absolute;inset:0;background:repeating-linear-gradient(135deg,rgba(201,75,94,.06) 0 8px,transparent 8px 16px)"></div>
+        <div style="position:absolute;top:14px;left:14px;font:400 9px ui-monospace,monospace;letter-spacing:1px;color:rgba(201,75,94,.55);border:1px solid rgba(201,75,94,.25);border-radius:8px;padding:4px 8px">poster art</div>
+        <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(10,14,23,.94))"></div>
+        <div style="position:absolute;bottom:0;left:0;right:0;padding:20px">
+          <span style="font-size:9px;letter-spacing:4px;color:#C94B5E;text-transform:uppercase">Boublil &amp; Schönberg's</span>
+          <h3 style="font-family:'Playfair Display',serif;font-weight:600;font-size:23px;margin-top:6px;text-wrap:pretty">Les Misérables</h3>
+        </div>
+      </div>
+      <div onClick="{{ goArchive }}" style="position:relative;height:320px;border:1px solid rgba(217,201,163,.25);border-radius:12px;overflow:hidden;cursor:pointer;transition:transform .3s,border-color .3s" style-hover="transform:translateY(-5px);border-color:#D9A441">
+        <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 30%,#4d3a15,#141005)"></div>
+        <div style="position:absolute;inset:0;background:repeating-linear-gradient(135deg,rgba(217,164,65,.06) 0 8px,transparent 8px 16px)"></div>
+        <div style="position:absolute;top:14px;left:14px;font:400 9px ui-monospace,monospace;letter-spacing:1px;color:rgba(217,164,65,.55);border:1px solid rgba(217,164,65,.25);border-radius:8px;padding:4px 8px">poster art</div>
+        <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(10,14,23,.94))"></div>
+        <div style="position:absolute;bottom:0;left:0;right:0;padding:20px">
+          <span style="font-size:9px;letter-spacing:4px;color:#D9A441;text-transform:uppercase">Andrew Lloyd Webber's</span>
+          <h3 style="font-family:'Playfair Display',serif;font-weight:600;font-size:23px;margin-top:6px;text-wrap:pretty">Cats</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div data-l="divider" style="display:flex;align-items:center;gap:14px;margin:56px auto;max-width:920px;padding:0 24px">
+    <div style="flex:1;height:1px;background:#D9C9A3;opacity:.6"></div>
+    <span style="font-size:12px;letter-spacing:5px;color:#D9C9A3">NOW SHOWING</span>
+    <div style="flex:1;height:1px;background:#D9C9A3;opacity:.6"></div>
+  </div>
+
+  <div style="max-width:760px;margin:0 auto;padding:0 24px">
+    <div data-l="showrow" style="display:flex;justify-content:space-between;align-items:center;gap:16px;padding:20px 0;border-bottom:1px solid rgba(217,201,163,.25)">
+      <div style="min-width:180px">
+        <span style="font-size:9px;letter-spacing:4px;color:#D9C9A3;text-transform:uppercase">His Majesty's Theatre · London</span>
+        <h3 style="font-family:'Playfair Display',serif;font-weight:600;font-size:20px;margin-top:4px">The Phantom of the Opera</h3>
+      </div>
+      <span style="font-size:13px;color:#B8B2A4;letter-spacing:1px">Thu 16 Jul · 7:30 PM · from £39.50</span>
+      <a data-l="showbtn" onClick="{{ goBooking }}" style="display:flex;align-items:center;justify-content:center;text-align:center;padding:13px 28px;font:500 12px 'Inter',sans-serif;letter-spacing:3px;text-transform:uppercase;cursor:pointer;border-radius:8px;background:#8B1A2B;color:#F5F0E8" style-hover="background:#a11f33">Book now</a>
+    </div>
+    <div data-l="showrow" style="display:flex;justify-content:space-between;align-items:center;gap:16px;padding:20px 0;border-bottom:1px solid rgba(217,201,163,.25)">
+      <div style="min-width:180px">
+        <span style="font-size:9px;letter-spacing:4px;color:#D9C9A3;text-transform:uppercase">Sondheim Theatre · London</span>
+        <h3 style="font-family:'Playfair Display',serif;font-weight:600;font-size:20px;margin-top:4px">Les Misérables</h3>
+      </div>
+      <span style="font-size:13px;color:#B8B2A4;letter-spacing:1px">Sat 18 Jul · 2:30 PM · from £30.00</span>
+      <a data-l="showbtn" onClick="{{ goBooking }}" style="display:flex;align-items:center;justify-content:center;text-align:center;padding:13px 28px;font:500 12px 'Inter',sans-serif;letter-spacing:3px;text-transform:uppercase;cursor:pointer;border-radius:8px;background:#8B1A2B;color:#F5F0E8" style-hover="background:#a11f33">Book now</a>
+    </div>
+  </div>
+
+  <div data-l="divider" style="display:flex;align-items:center;gap:14px;margin:56px auto;max-width:920px;padding:0 24px">
+    <div style="flex:1;height:1px;background:#D9C9A3;opacity:.6"></div>
+    <span style="font-size:12px;letter-spacing:5px;color:#D9C9A3">ANGEL OF THE MONTH</span>
+    <div style="flex:1;height:1px;background:#D9C9A3;opacity:.6"></div>
+  </div>
+
+  <div style="max-width:1080px;margin:0 auto;padding:0 24px 70px">
+    <div data-l="month" style="display:flex;gap:30px;align-items:center;justify-content:center;flex-wrap:wrap;border:1px solid rgba(217,201,163,.25);border-radius:16px;padding:30px;background:radial-gradient(ellipse 60% 90% at 20% 50%,rgba(217,201,163,.07),transparent 70%)">
+      <div style="position:relative;width:160px;height:200px;border:1px solid #D9C9A3;border-radius:12px;background:linear-gradient(160deg,#1a2138,#0d1120);display:flex;align-items:center;justify-content:center;transform:rotate(-2.5deg);flex:none;overflow:hidden">
+        <div style="position:absolute;inset:0;background:repeating-linear-gradient(135deg,rgba(217,201,163,.06) 0 8px,transparent 8px 16px)"></div>
+        <span style="position:relative;font:400 9px ui-monospace,monospace;letter-spacing:1px;color:rgba(217,201,163,.65);text-align:center;padding:0 10px">winning<br />tribute photo</span>
+        <span style="position:absolute;top:8px;right:10px;font-size:20px;filter:drop-shadow(0 0 8px rgba(217,201,163,.7))">👑</span>
+      </div>
+      <div style="max-width:360px">
+        <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:21px;color:#D9C9A3">The Muse has chosen.</p>
+        <p style="font-size:14px;color:#B8B2A4;line-height:1.8;margin-top:10px;text-wrap:pretty">This month, Layla's tribute captured the muse's pose — and her heart. One hand to the sky, one rose to the chest.</p>
+        <a onClick="{{ goTribute }}" style="display:inline-flex;align-items:center;justify-content:center;text-align:center;margin-top:18px;padding:13px 28px;font:500 12px 'Inter',sans-serif;letter-spacing:3px;text-transform:uppercase;cursor:pointer;border-radius:8px;border:1px solid rgba(217,201,163,.25);color:#D9C9A3" style-hover="border-color:#D9C9A3">Pay your tribute</a>
+      </div>
+    </div>
+  </div>
+
+  <footer style="border-top:1px solid rgba(217,201,163,.25);background:linear-gradient(180deg,#100E0B,#171412);padding:52px 24px 34px">
+    <div style="max-width:1080px;margin:0 auto">
+      <div data-l="footcols" style="display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:34px">
+        <div>
+          <span style="display:inline-flex;flex-direction:column;line-height:1">
+            <span style="font-family:'Cinzel Decorative',serif;font-weight:700;font-size:16px;text-transform:uppercase;background:linear-gradient(178deg,#F7EFD9 0%,#D9C9A3 45%,#9C8A5C 100%);-webkit-background-clip:text;background-clip:text;color:transparent">Angel of Music</span>
+            <span style="font-family:'Cinzel',serif;font-size:7px;letter-spacing:4px;color:#D9C9A3;text-transform:uppercase;margin-top:5px;opacity:.85">The Home of Musicals</span>
+          </span>
+          <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;color:#B8B2A4;margin-top:14px;line-height:1.6">The house lights never truly go down.</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <span style="font-size:10px;letter-spacing:3px;color:#D9C9A3;text-transform:uppercase">The House</span>
+          <a onClick="{{ goArchive }}" style="font-size:13px;color:#B8B2A4;text-decoration:none;cursor:pointer" style-hover="color:#D9C9A3">Archive</a>
+          <a onClick="{{ goBooking }}" style="font-size:13px;color:#B8B2A4;text-decoration:none;cursor:pointer" style-hover="color:#D9C9A3">Now showing</a>
+          <a onClick="{{ goBooking }}" style="font-size:13px;color:#B8B2A4;text-decoration:none;cursor:pointer" style-hover="color:#D9C9A3">Venues</a>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <span style="font-size:10px;letter-spacing:3px;color:#D9C9A3;text-transform:uppercase">The Foyer</span>
+          <a onClick="{{ goCommunity }}" style="font-size:13px;color:#B8B2A4;text-decoration:none;cursor:pointer" style-hover="color:#D9C9A3">Community</a>
+          <a onClick="{{ goTribute }}" style="font-size:13px;color:#B8B2A4;text-decoration:none;cursor:pointer" style-hover="color:#D9C9A3">Tribute of the Month</a>
+          <a onClick="{{ goCommunity }}" style="font-size:13px;color:#B8B2A4;text-decoration:none;cursor:pointer" style-hover="color:#D9C9A3">Scrapbooks</a>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <span style="font-size:10px;letter-spacing:3px;color:#D9C9A3;text-transform:uppercase">At the Door</span>
+          <a onClick="{{ goAuth }}" style="font-size:13px;color:#B8B2A4;text-decoration:none;cursor:pointer" style-hover="color:#D9C9A3">Sign in</a>
+          <a onClick="{{ goAuth }}" style="font-size:13px;color:#B8B2A4;text-decoration:none;cursor:pointer" style-hover="color:#D9C9A3">Create an account</a>
+          <a style="font-size:13px;color:#B8B2A4;text-decoration:none;cursor:pointer" style-hover="color:#D9C9A3">Accessibility</a>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:38px;padding-top:20px;border-top:1px solid rgba(217,201,163,.12)">
+        <span style="font-size:11px;letter-spacing:2px;color:#6d675d;text-transform:uppercase">© 2026 Angel of Music</span>
+        <span style="font-size:11px;letter-spacing:2px;color:#6d675d;text-transform:uppercase">A demonstration house · no real charges</span>
+      </div>
+    </div>
+  </footer>
+  <dc-import name="BackToTop" style="position:sticky;bottom:26px;height:0;z-index:80" hint-size="0,0"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:1600},&quot;onNavigate&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(page: string) =&gt; void&quot;}}">
+class Component extends DCLogic {
+  go(p) { if (this.props.onNavigate) this.props.onNavigate(p); }
+  renderVals() {
+    return {
+      onNavigate: this.props.onNavigate,
+      frameHeight: this.props.frameHeight ?? '100vh',
+      goArchive: () => this.go('archive'),
+      goBooking: () => this.go('booking'),
+      goTribute: () => this.go('tribute'),
+      goCommunity: () => this.go('community'),
+      goAuth: () => this.go('auth')
+    };
+  }
+}
+</script>
+</body>
+</html>

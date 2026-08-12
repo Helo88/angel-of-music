@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@keyframes aomSheenSweep{0%,100%{background-position:200% 0}50%{background-position:-20% 0}}
+@container (max-width: 1000px){
+  [data-c="pad"]{padding-left:26px !important;padding-right:26px !important}
+  [data-c="cols"]{grid-template-columns:1fr !important}
+  [data-c="side"]{order:-1 !important;position:static !important}
+
+}
+@keyframes aomSmoke{0%{transform:translateY(30px) scaleY(.2) scaleX(.5);opacity:0}25%{opacity:.9}70%{transform:translateY(-30px) scaleY(1.3) scaleX(1.1);opacity:.5}100%{transform:translateY(-60px) scaleY(1.6) scaleX(1.4);opacity:0}}
+@keyframes aomFall{0%{transform:translateY(-60px) rotate(0deg);opacity:0}8%{opacity:.18}88%{opacity:.14}100%{transform:translateY(102vh) rotate(150deg);opacity:0}}
+@keyframes aomFallSway{0%{transform:translate(0,-60px) rotate(-8deg);opacity:0}10%{opacity:.16}50%{transform:translate(26px,45vh) rotate(60deg)}90%{opacity:.12}100%{transform:translate(-14px,102vh) rotate(170deg);opacity:0}}
+@keyframes aomGenieFloat{0%{transform:translate(-50%,80px) scale(.35) skewX(16deg);opacity:0;filter:blur(18px)}22%{opacity:1;filter:blur(2px);transform:translate(-50%,0) scale(1) skewX(-4deg)}34%{transform:translate(-50%,6px) scale(1) skewX(0deg);filter:blur(0)}50%{transform:translate(-50%,-10px) scale(1.03)}66%{transform:translate(-50%,0) scale(1)}82%{transform:translate(-50%,-6px) scale(1.02);opacity:1}100%{transform:translate(-50%,-40px) scale(.92);opacity:0;filter:blur(10px)}}
+@keyframes aomFly{0%{transform:translate(var(--dx),var(--dy)) scale(.1) rotate(-14deg);opacity:0;filter:blur(4px)}12%{opacity:.95}55%{transform:translate(calc(var(--dx) * .42), calc(var(--dy) * .42)) scale(.42) rotate(6deg);filter:blur(2px)}85%{transform:translate(0,0) scale(1.04) rotate(calc(var(--tilt) * 1.6));filter:blur(0)}100%{transform:translate(0,0) scale(1) rotate(var(--tilt));opacity:1;filter:blur(0)}}
+@keyframes aomSnap{0%,58%{transform:scale(.2);opacity:0}66%{transform:scale(1.5);opacity:1}100%{transform:scale(3.4);opacity:0}}
+@keyframes aomConjure{0%{transform:scale(.04) translateY(28px);opacity:0;filter:blur(8px)}45%{opacity:1}70%{transform:scale(1.03) translateY(0);filter:blur(0)}100%{transform:scale(1) translateY(0);opacity:1;filter:blur(0)}}
+@keyframes aomCardSettle{0%{opacity:0;transform:translateY(14px) rotate(0deg)}100%{opacity:1;transform:translateY(0) rotate(var(--tilt))}}
+@container (max-width: 620px){
+  [data-c="pad"]{padding-left:16px !important;padding-right:16px !important}
+  [data-c="tabs"]{overflow-x:auto !important;scrollbar-width:none !important}
+  [data-c="tabs"]::-webkit-scrollbar{display:none !important}
+  [data-c="thread"]{grid-template-columns:44px 1fr !important}
+  [data-c="thread"] [data-c="stats"]{display:none !important}
+  [data-c="scrap"]{grid-template-columns:repeat(2,1fr) !important}
+}
+</style>
+</helmet>
+<div style="position:relative;container-type:inline-size;background:#100E0B;color:#F5F0E8;font-family:'Inter',sans-serif;font-weight:300;min-height:100%">
+  <dc-import name="SiteNav" style="position:sticky;top:0;z-index:95" theme="house" frameHeight="{{ frameHeight }}" isLoggedIn="{{ true }}" hint-size="100%,96px"></dc-import>
+
+  <div style="position:fixed;inset:96px 0 0 0;z-index:0;pointer-events:none;overflow:hidden">
+    <svg viewBox="0 0 24 24" width="34" height="34" style="position:absolute;left:6%;top:0;opacity:0;animation:aomFall 15s linear infinite"><path d="M12 2 L13.7 10.3 L22 12 L13.7 13.7 L12 22 L10.3 13.7 L2 12 L10.3 10.3 Z" fill="none" stroke="#D9C9A3" stroke-width=".9" stroke-linejoin="round"></path></svg>
+    <svg viewBox="0 0 24 24" width="42" height="42" style="position:absolute;left:19%;top:0;opacity:0;animation:aomFallSway 21s linear infinite 2.5s"><path d="M2.4 9.6 C4 6.4 8 5.2 12 5.2 C16 5.2 20 6.4 21.6 9.6 C21.6 13.4 19 17.2 15.4 17.2 C13.6 17.2 12.7 15.6 12 15.6 C11.3 15.6 10.4 17.2 8.6 17.2 C5 17.2 2.4 13.4 2.4 9.6 Z" fill="none" stroke="#D9C9A3" stroke-width=".9"></path><path d="M12 5.2 C11 3.2 12 2 12 2 C12 2 13 3.2 12 5.2 Z" fill="none" stroke="#D9C9A3" stroke-width=".8"></path><path d="M5.6 10 C6.6 8.4 9 8 10.2 9.4 C9.4 11.2 6.8 11.6 5.6 10 Z" fill="none" stroke="#D9C9A3" stroke-width=".85"></path><path d="M18.4 10 C17.4 8.4 15 8 13.8 9.4 C14.6 11.2 17.2 11.6 18.4 10 Z" fill="none" stroke="#D9C9A3" stroke-width=".85"></path><path d="M4 7.4 C3 6.6 3.2 5.4 4.4 5.2 M20 7.4 C21 6.6 20.8 5.4 19.6 5.2" fill="none" stroke="#D9C9A3" stroke-opacity=".6" stroke-width=".7" stroke-linecap="round"></path><path d="M7 13.6 C8.2 14.6 9.4 14.8 10.6 14.2 M17 13.6 C15.8 14.6 14.6 14.8 13.4 14.2" fill="none" stroke="#D9C9A3" stroke-opacity=".55" stroke-width=".7" stroke-linecap="round"></path></svg>
+    <svg viewBox="0 0 24 24" width="30" height="30" style="position:absolute;left:33%;top:0;opacity:0;animation:aomFall 18s linear infinite 5s"><circle cx="12" cy="12" r="2.6" fill="none" stroke="#D9C9A3" stroke-width=".9"></circle><path d="M12 9.4 C12 5.6 15.6 4.4 16.6 6.6 C17.4 8.4 15 9.6 12 9.4 Z" fill="none" stroke="#D9C9A3" stroke-width=".85"></path><path d="M14.6 12 C18.4 12 19.6 15.6 17.4 16.6 C15.6 17.4 14.4 15 14.6 12 Z" fill="none" stroke="#D9C9A3" stroke-width=".85"></path><path d="M12 14.6 C12 18.4 8.4 19.6 7.4 17.4 C6.6 15.6 9 14.4 12 14.6 Z" fill="none" stroke="#D9C9A3" stroke-width=".85"></path><path d="M9.4 12 C5.6 12 4.4 8.4 6.6 7.4 C8.4 6.6 9.6 9 9.4 12 Z" fill="none" stroke="#D9C9A3" stroke-width=".85"></path></svg>
+    <svg viewBox="0 0 24 24" width="24" height="24" style="position:absolute;left:47%;top:0;opacity:0;animation:aomFallSway 24s linear infinite 1s"><path d="M12 2 L13.7 10.3 L22 12 L13.7 13.7 L12 22 L10.3 13.7 L2 12 L10.3 10.3 Z" fill="none" stroke="#D9C9A3" stroke-width=".9" stroke-linejoin="round"></path></svg>
+    <svg viewBox="0 0 24 24" width="38" height="38" style="position:absolute;left:61%;top:0;opacity:0;animation:aomFall 20s linear infinite 7s"><path d="M2.4 9.6 C4 6.4 8 5.2 12 5.2 C16 5.2 20 6.4 21.6 9.6 C21.6 13.4 19 17.2 15.4 17.2 C13.6 17.2 12.7 15.6 12 15.6 C11.3 15.6 10.4 17.2 8.6 17.2 C5 17.2 2.4 13.4 2.4 9.6 Z" fill="none" stroke="#D9C9A3" stroke-width=".9"></path><path d="M12 5.2 C11 3.2 12 2 12 2 C12 2 13 3.2 12 5.2 Z" fill="none" stroke="#D9C9A3" stroke-width=".8"></path><path d="M5.6 10 C6.6 8.4 9 8 10.2 9.4 C9.4 11.2 6.8 11.6 5.6 10 Z" fill="none" stroke="#D9C9A3" stroke-width=".85"></path><path d="M18.4 10 C17.4 8.4 15 8 13.8 9.4 C14.6 11.2 17.2 11.6 18.4 10 Z" fill="none" stroke="#D9C9A3" stroke-width=".85"></path><path d="M4 7.4 C3 6.6 3.2 5.4 4.4 5.2 M20 7.4 C21 6.6 20.8 5.4 19.6 5.2" fill="none" stroke="#D9C9A3" stroke-opacity=".6" stroke-width=".7" stroke-linecap="round"></path><path d="M7 13.6 C8.2 14.6 9.4 14.8 10.6 14.2 M17 13.6 C15.8 14.6 14.6 14.8 13.4 14.2" fill="none" stroke="#D9C9A3" stroke-opacity=".55" stroke-width=".7" stroke-linecap="round"></path></svg>
+    <svg viewBox="0 0 24 24" width="32" height="32" style="position:absolute;left:76%;top:0;opacity:0;animation:aomFallSway 17s linear infinite 3.5s"><circle cx="12" cy="12" r="2.6" fill="none" stroke="#D9C9A3" stroke-width=".9"></circle><path d="M12 9.4 C12 5.6 15.6 4.4 16.6 6.6 C17.4 8.4 15 9.6 12 9.4 Z" fill="none" stroke="#D9C9A3" stroke-width=".85"></path><path d="M14.6 12 C18.4 12 19.6 15.6 17.4 16.6 C15.6 17.4 14.4 15 14.6 12 Z" fill="none" stroke="#D9C9A3" stroke-width=".85"></path><path d="M12 14.6 C12 18.4 8.4 19.6 7.4 17.4 C6.6 15.6 9 14.4 12 14.6 Z" fill="none" stroke="#D9C9A3" stroke-width=".85"></path><path d="M9.4 12 C5.6 12 4.4 8.4 6.6 7.4 C8.4 6.6 9.6 9 9.4 12 Z" fill="none" stroke="#D9C9A3" stroke-width=".85"></path></svg>
+    <svg viewBox="0 0 24 24" width="28" height="28" style="position:absolute;left:89%;top:0;opacity:0;animation:aomFall 22s linear infinite 9s"><path d="M12 2 L13.7 10.3 L22 12 L13.7 13.7 L12 22 L10.3 13.7 L2 12 L10.3 10.3 Z" fill="none" stroke="#D9C9A3" stroke-width=".9" stroke-linejoin="round"></path></svg>
+  </div>
+
+  <div data-c="pad" style="position:relative;z-index:1;max-width:1160px;margin:0 auto;padding:50px 30px 10px;text-align:center">
+    <span style="font-family:'Cinzel',serif;font-size:10px;letter-spacing:6px;color:#D9C9A3;text-transform:uppercase">The Green Room</span>
+    <h1 style="font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(30px,4cqw,46px);margin-top:14px">Community</h1>
+    <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:19px;color:#C6BCA6;margin-top:10px;max-width:52ch;margin-left:auto;margin-right:auto;text-wrap:pretty">Talk shows, trade tickets, and share your scrapbooks with fellow theatre-goers.</p>
+  </div>
+
+  <div data-c="pad" style="max-width:1160px;margin:36px auto 0;padding:0 30px">
+    <div data-c="tabs" style="display:flex;gap:24px;border-bottom:1px solid rgba(217,201,163,.2)">
+      <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="2">
+        <span onClick="{{ t.pick }}" style="font-size:10.5px;letter-spacing:2px;text-transform:uppercase;padding:12px 0;cursor:pointer;white-space:nowrap;color:{{ t.color }};border-bottom:2px solid {{ t.rule }}">{{ t.label }}</span>
+      </sc-for>
+    </div>
+  </div>
+
+  <sc-if value="{{ isForum }}" hint-placeholder-val="{{ true }}">
+    <div data-c="pad" style="max-width:1160px;margin:0 auto;padding:26px 30px 90px">
+      <div data-c="cols" style="display:grid;grid-template-columns:1fr 300px;gap:36px">
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:22px">
+            <span style="font-size:12px;color:#8d8579">{{ threadCount }} threads</span>
+            <a onClick="{{ noop }}" style="display:flex;align-items:center;justify-content:center;text-align:center;padding:12px 24px;font:500 11px 'Inter',sans-serif;letter-spacing:3px;text-transform:uppercase;cursor:pointer;border-radius:8px;background:linear-gradient(135deg,#E4D6AE,#B79B62);color:#171204">New thread</a>
+          </div>
+
+          <sc-if value="{{ featured }}" hint-placeholder-val="{{ true }}">
+            <div onClick="{{ openThread }}" style="position:relative;border-radius:14px;overflow:hidden;border:1px solid rgba(217,201,163,.35);padding:28px;margin-bottom:26px;background:radial-gradient(ellipse 90% 140% at 100% 0%,rgba(217,201,163,.14),transparent 65%),linear-gradient(155deg,#221c14,#100E0B);cursor:pointer" style-hover="border-color:#D9C9A3">
+              <span style="position:absolute;top:0;right:0;font-size:9px;letter-spacing:3px;text-transform:uppercase;padding:7px 16px;background:linear-gradient(135deg,#E4D6AE,#B79B62);color:#171204;border-radius:0 0 0 10px">📌 Pinned by admin</span>
+              <span style="font-size:9px;letter-spacing:3px;color:#D9C9A3;text-transform:uppercase">{{ featured.show }}</span>
+              <h3 style="font-family:'Playfair Display',serif;font-weight:600;font-size:24px;margin-top:10px;max-width:80%">{{ featured.title }}</h3>
+              <p style="font-size:12px;color:#8d8579;margin-top:10px">{{ featured.author }} · {{ featured.time }}</p>
+              <div style="display:flex;gap:26px;margin-top:18px">
+                <span style="font-size:12px;color:#B8B2A4">💬 {{ featured.replies }} replies</span>
+                <span style="font-size:12px;color:#B8B2A4">✦ {{ featured.likes }} likes</span>
+              </div>
+            </div>
+          </sc-if>
+
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <sc-for list="{{ threads }}" as="th" hint-placeholder-count="6">
+              <div data-c="thread" onClick="{{ openThread }}" style="position:relative;display:grid;grid-template-columns:48px 1fr auto;gap:16px;align-items:center;padding:18px;border-radius:12px;border:1px solid rgba(217,201,163,.14);background:rgba(217,201,163,.02);cursor:pointer;border-left:3px solid {{ th.rule }};transition:border-color .25s,background .25s" style-hover="background:rgba(217,201,163,.07);border-color:#D9C9A3">
+                <span style="width:48px;height:48px;border-radius:999px;flex:none;background:{{ th.avatarBg }};display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:17px;color:#171204;box-shadow:0 4px 12px rgba(0,0,0,.35)">{{ th.initial }}</span>
+                <div style="min-width:0">
+                  <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+                    <span style="font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:3px 9px;border-radius:999px;background:rgba(217,201,163,.12);color:#D9C9A3;border:1px solid rgba(217,201,163,.25)">{{ th.show }}</span>
+                    <span style="font-size:10px;color:#6d675d">{{ th.time }}</span>
+                  </div>
+                  <p style="font-size:14.5px;color:#F5F0E8;margin-top:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ th.title }}</p>
+                  <p style="font-size:11px;color:#8d8579;margin-top:4px">by {{ th.author }}</p>
+                </div>
+                <div data-c="stats" style="display:flex;gap:18px;flex:none">
+                  <span style="font-size:12px;color:#B8B2A4;text-align:center">💬<br /><span style="font-size:11px;color:#F5F0E8">{{ th.replies }}</span></span>
+                  <span style="font-size:12px;color:#B8B2A4;text-align:center">✦<br /><span style="font-size:11px;color:#F5F0E8">{{ th.likes }}</span></span>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div data-c="side" style="display:flex;flex-direction:column;gap:16px;position:sticky;top:112px;align-self:start">
+          <div style="border:1px solid rgba(217,201,163,.2);border-radius:12px;padding:20px;background:linear-gradient(165deg,rgba(217,201,163,.06),transparent)">
+            <span style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:4px;color:#D9C9A3;text-transform:uppercase">Trending shows</span>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:14px">
+              <sc-for list="{{ trending }}" as="tr" hint-placeholder-count="4">
+                <span style="display:flex;align-items:center;gap:6px;font-size:11.5px;padding:7px 12px;border-radius:999px;border:1px solid rgba(217,201,163,.25);background:rgba(217,201,163,.05)"><span style="color:#F5F0E8">{{ tr.name }}</span><span style="color:#6d675d">· {{ tr.count }}</span></span>
+              </sc-for>
+            </div>
+          </div>
+          <div style="position:relative;overflow:hidden;padding:20px 20px 20px 22px;border-radius:10px;border:1px solid rgba(217,201,163,.3);background:linear-gradient(155deg,#241d13,#100E0B)">
+            <div style="position:absolute;inset:0;background:linear-gradient(115deg,transparent 30%,rgba(217,201,163,.18) 48%,transparent 66%);background-size:220% 100%;animation:aomSheenSweep 4.5s ease-in-out infinite"></div>
+            <div style="position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,#E4D6AE,#B79B62)"></div>
+            <div style="position:relative;display:flex;gap:12px;align-items:flex-start">
+              <span style="font-family:'Playfair Display',serif;font-size:28px;background:linear-gradient(135deg,#F0E4C8,#B79B62);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1;flex:none;filter:drop-shadow(0 0 8px rgba(217,201,163,.4))">✦</span>
+              <div>
+                <span style="font-size:9px;letter-spacing:4px;color:#D9C9A3;text-transform:uppercase">House Rules</span>
+                <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15.5px;line-height:1.65;color:#E9E1D2;margin-top:6px;text-wrap:pretty">Be kind. Guard spoilers behind a warning. Keep ticket trades to the marketplace thread.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isScrap }}" hint-placeholder-val="{{ false }}">
+    <div data-c="pad" style="max-width:1160px;margin:0 auto;padding:26px 30px 90px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:22px">
+        <span style="font-size:12px;color:#8d8579">{{ scrapCount }} pages shared</span>
+      </div>
+      <div style="position:relative">
+        <div style="position:absolute;left:50%;top:20px;z-index:8;pointer-events:none;animation:aomGenieFloat 2.6s ease-in-out both">
+          <div style="position:relative;width:340px;height:400px;border-radius:10px;overflow:hidden;box-shadow:0 0 90px rgba(244,229,184,.45);-webkit-mask-image:radial-gradient(ellipse 66% 62% at 50% 44%,#000 55%,transparent 82%);mask-image:radial-gradient(ellipse 66% 62% at 50% 44%,#000 55%,transparent 82%)">
+            <img src="assets/muse-conjure.jpg" alt="" style="width:100%;height:100%;object-fit:cover;display:block" />
+          </div>
+          <span style="position:absolute;left:50%;top:46%;width:120px;height:120px;margin:-60px 0 0 -60px;border-radius:999px;background:radial-gradient(circle,rgba(255,250,235,.9),rgba(244,229,184,.45) 35%,transparent 70%);animation:aomSnap 2.6s ease-out both"></span>
+        </div>
+        <div data-c="scrap" ref="{{ gridRef }}" style="position:relative;z-index:1;display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+        <sc-for list="{{ scrapbooks }}" as="sb" hint-placeholder-count="8">
+          <div onClick="{{ sb.open }}" style="position:relative;border-radius:8px;overflow:hidden;border:1px solid rgba(217,201,163,.2);aspect-ratio:3/4;background:linear-gradient(160deg,#221c12,#100E0B);cursor:pointer;--tilt:{{ sb.tilt }};--dx:{{ sb.dx }};--dy:{{ sb.dy }};box-shadow:0 10px 26px rgba(0,0,0,.45);animation:aomFly 1.3s cubic-bezier(.3,.05,.2,1) {{ sb.delay }} both" style-hover="border-color:#D9C9A3">
+            <div style="position:absolute;inset:0;background:repeating-linear-gradient(135deg,rgba(217,201,163,.05) 0 8px,transparent 8px 16px)"></div>
+            <span style="position:absolute;left:0;right:0;top:44%;text-align:center;font:400 8px ui-monospace,monospace;letter-spacing:1px;color:rgba(217,201,163,.5)">scrapbook page</span>
+            <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(10,8,6,.9))"></div>
+            <div style="position:absolute;bottom:0;left:0;right:0;padding:10px 12px">
+              <span style="font-size:11px;color:#F5F0E8">{{ sb.author }}</span>
+              <p style="font-size:9px;color:#8d8579;margin-top:2px">{{ sb.show }}</p>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <dc-import name="BackToTop" theme="house" style="position:sticky;bottom:26px;height:0;z-index:80" hint-size="0,0"></dc-import>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:1400},&quot;onNavigate&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(page: string) =&gt; void&quot;},&quot;frameHeight&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  state = { view: 'forum' };
+  componentDidMount() {
+    this.onResize = () => { this.measured = false; this.measure(); };
+    window.addEventListener('resize', this.onResize);
+  }
+  componentWillUnmount() { window.removeEventListener('resize', this.onResize); }
+  measure() {
+    const grid = this.grid;
+    if (!grid) return;
+    const offsets = [...grid.children].map(el => {
+      const r = el.getBoundingClientRect();
+      return { dx: Math.round(24 - r.left), dy: Math.round(-r.height - 40 - (r.top - grid.getBoundingClientRect().top)) };
+    });
+    const cur = this.state.offsets || [];
+    const same = cur.length === offsets.length && offsets.every((o, i) => cur[i] && cur[i].dx === o.dx && cur[i].dy === o.dy);
+    if (!same) this.setState({ offsets });
+  }
+  renderVals() {
+    const st = this.state;
+    const threadDefs = [
+      { title: "Anyone else cry at 'Music of the Night'?", author: 'Layla', show: 'Phantom', time: '2h ago', replies: 34, likes: 112 },
+      { title: 'Trading 2 tickets for Cats, Sat matinee', author: 'Marcus', show: 'Cats', time: '4h ago', replies: 8, likes: 15 },
+      { title: 'Best seats at His Majesty\'s Theatre?', author: 'Priya', show: 'Phantom', time: '6h ago', replies: 19, likes: 40 },
+      { title: 'Les Mis 2026 cast announced!', author: 'Tom', show: 'Les Misérables', time: '1d ago', replies: 52, likes: 201 },
+      { title: 'First time at the theatre — tips?', author: 'Aisha', show: 'General', time: '1d ago', replies: 27, likes: 68 },
+      { title: 'Grizabella\'s costume this season is gorgeous', author: 'Ben', show: 'Cats', time: '2d ago', replies: 11, likes: 54 }
+    ];
+    const ruleColors = ['#D9C9A3', 'rgba(217,201,163,.2)', 'rgba(217,201,163,.2)', 'rgba(217,201,163,.2)', 'rgba(217,201,163,.2)', 'rgba(217,201,163,.2)'];
+    const avatarBgs = ['linear-gradient(135deg,#E4D6AE,#B79B62)', 'linear-gradient(135deg,#C9CFDD,#7C88A6)', 'linear-gradient(135deg,#E4D6AE,#9C6B5C)', 'linear-gradient(135deg,#B8C4A8,#5C6E4A)', 'linear-gradient(135deg,#E4D6AE,#B79B62)', 'linear-gradient(135deg,#C9CFDD,#7C88A6)'];
+    const featured = { title: 'Les Mis 2026 cast announced!', author: 'Tom', show: 'Les Misérables', time: '1d ago', replies: 52, likes: 201 };
+    const threads = threadDefs.filter(t => t.title !== featured.title).map((t, i) => ({ ...t, initial: t.author[0], avatarBg: avatarBgs[i], rule: ruleColors[i] }));
+    const scrapDefs = [
+      { author: 'Rowan', show: 'Phantom', tilt: '-1deg' }, { author: 'Sofia', show: 'Cats', tilt: '0.8deg' },
+      { author: 'Ben', show: 'Les Misérables', tilt: '-0.5deg' }, { author: 'Aisha', show: 'Phantom', tilt: '1.1deg' },
+      { author: 'Tom', show: 'Cats', tilt: '-0.7deg' }, { author: 'Priya', show: 'Les Misérables', tilt: '0.5deg' },
+      { author: 'Marcus', show: 'Phantom', tilt: '-1.2deg' }, { author: 'Layla', show: 'Cats', tilt: '0.9deg' }
+    ];
+    return {
+      frameHeight: this.props.frameHeight ?? '100vh',
+      isForum: st.view === 'forum', isScrap: st.view === 'scrapbooks',
+      tabs: [{ id: 'forum', label: 'Forum' }, { id: 'scrapbooks', label: 'Scrapbooks' }].map(t => ({
+        label: t.label,
+        color: st.view === t.id ? '#F5F0E8' : '#8E96A8',
+        rule: st.view === t.id ? '#D9C9A3' : 'transparent',
+        pick: () => this.setState({ view: t.id })
+      })),
+      threadCount: threadDefs.length, threads, featured,
+      openThread: () => this.props.onNavigate && this.props.onNavigate('thread'),
+      trending: [{ name: 'The Phantom of the Opera', count: 214 }, { name: 'Cats', count: 88 }, { name: 'Les Misérables', count: 61 }, { name: 'Wicked', count: 40 }],
+      scrapCount: scrapDefs.length,
+      gridRef: el => {
+        this.grid = el;
+        if (el && !this.measured) { this.measured = true; requestAnimationFrame(() => this.measure()); }
+        if (!el) this.measured = false;
+      },
+      scrapbooks: scrapDefs.map((sb, i) => {
+        const o = (st.offsets && st.offsets[i]) || { dx: -260, dy: -300 };
+        return { ...sb, dx: o.dx + 'px', dy: o.dy + 'px', delay: (1.75 + i * 0.07) + 's', open: () => this.props.onNavigate && this.props.onNavigate('scrapbook') };
+      }),
+      noop: () => {}
+    };
+  }
+}
+
+</script>
+</body>
+</html>
