@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&amp;family=Cormorant+Garamond:ital,wght@1,400;1,500&amp;family=Inter:wght@300;400;500;600&amp;family=Cinzel:wght@400;500&amp;display=swap" rel="stylesheet" />
+<style>
+@keyframes dpFade{from{opacity:0}to{opacity:1}}
+@container (max-width: 860px){
+  [data-dp="head"]{flex-direction:column !important;text-align:center !important;gap:16px !important}
+  [data-dp="stats"]{justify-content:center !important}
+  [data-dp="sheet"]{flex-direction:column !important}
+}
+@container (max-width: 620px){
+  [data-dp="pad"]{padding-left:16px !important;padding-right:16px !important}
+  [data-dp="tabs"]{overflow-x:auto !important;scrollbar-width:none !important}
+  [data-dp="tabs"]::-webkit-scrollbar{display:none !important}
+  [data-dp="grid"]{grid-template-columns:repeat(2,1fr) !important}
+  [data-dp="paper"]{padding:26px 22px !important}
+  [data-dp="modrow"]{flex-direction:column !important;align-items:flex-start !important;gap:14px !important}
+}
+</style>
+</helmet>
+<div style="container-type:inline-size;min-height:100%;background:#100E0B;color:#F5F0E8;font-family:'Inter',sans-serif;font-weight:300">
+  <dc-import name="SiteNav" style="position:sticky;top:0;z-index:95" onNavigate="{{ onNavigate }}" frameHeight="{{ frameHeight }}" isLoggedIn="{{ true }}" hint-size="100%,96px"></dc-import>
+
+  <div data-dp="pad" style="max-width:1160px;margin:0 auto;padding:44px 30px 0">
+    <div data-dp="head" style="display:flex;align-items:center;gap:22px">
+      <span style="width:88px;height:88px;border-radius:999px;flex:none;background:linear-gradient(135deg,#C9C2D8,#7E7794);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:600;font-size:30px;color:#14121C">M</span>
+      <div style="min-width:0;flex:1">
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+          <h1 style="font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(24px,3cqw,32px);margin:0">{{ designerName }}</h1>
+          <span style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:#D9C9A3;border:1px solid rgba(217,201,163,.35);border-radius:999px;padding:5px 11px">Verified designer</span>
+        </div>
+        <p style="font-size:12px;color:#8d8579;letter-spacing:1px;margin:6px 0 0">Blueprint designer · joined Feb 2024</p>
+        <div data-dp="stats" style="display:flex;gap:22px;margin-top:14px;flex-wrap:wrap">
+          <span style="font-size:11px;letter-spacing:1.5px;color:#B8B2A4"><b style="color:#D9C9A3">9</b> blueprints</span>
+          <span style="font-size:11px;letter-spacing:1.5px;color:#B8B2A4"><b style="color:#D9C9A3">2,140</b> books made</span>
+          <span style="font-size:11px;letter-spacing:1.5px;color:#B8B2A4"><b style="color:#D9C9A3">4.8</b> average of 214 reviews</span>
+        </div>
+      </div>
+      <span onClick="{{ goStudio }}" style="flex:none;font-family:'Cinzel',serif;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:#D9C9A3;border:1px solid rgba(217,201,163,.4);border-radius:999px;padding:11px 20px;cursor:pointer;transition:background .3s ease,color .3s ease" style-hover="background:#D9C9A3;color:#171204">Open studio</span>
+    </div>
+
+    <div data-dp="tabs" style="display:flex;gap:24px;border-bottom:1px solid rgba(217,201,163,.2);margin-top:34px">
+      <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="2">
+        <span onClick="{{ t.pick }}" style="font-size:10.5px;letter-spacing:2px;text-transform:uppercase;padding:12px 0;cursor:pointer;white-space:nowrap;color:{{ t.color }};border-bottom:2px solid {{ t.border }}">{{ t.label }}</span>
+      </sc-for>
+    </div>
+
+    <sc-if value="{{ isBlueprints }}" hint-placeholder-val="{{ true }}">
+      <div data-dp="grid" style="padding:30px 0 22px;display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+        <sc-for list="{{ blueprints }}" as="bp" hint-placeholder-count="4">
+          <div onClick="{{ bp.choose }}" style="position:relative;border-radius:8px;overflow:hidden;border:1px solid {{ bp.ring }};aspect-ratio:3/4;background:{{ bp.swatch }};cursor:pointer;transition:transform .3s ease,border-color .3s ease" style-hover="transform:translateY(-3px)">
+            <div style="position:absolute;inset:0;background:repeating-linear-gradient(135deg,rgba(255,255,255,.06) 0 8px,transparent 8px 16px)"></div>
+            <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(10,8,6,.92))"></div>
+            <span style="position:absolute;top:10px;left:10px;font-size:8.5px;letter-spacing:1.8px;text-transform:uppercase;color:{{ bp.stateInk }};border:1px solid {{ bp.stateLine }};border-radius:999px;padding:4px 9px;background:rgba(10,8,6,.55)">{{ bp.state }}</span>
+            <div style="position:absolute;bottom:0;left:0;right:0;padding:10px 12px">
+              <span style="font-size:11px;color:#F5F0E8">{{ bp.title }}</span>
+              <span style="display:block;font-size:9px;color:#8d8579;margin-top:2px">{{ bp.musical }} · {{ bp.uses }} books</span>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+
+      <div data-dp="paper" style="position:relative;margin:10px 0 66px;border-radius:4px;background:{{ selPaper }};box-shadow:0 22px 50px -18px rgba(0,0,0,.75), 0 0 0 1px rgba(217,201,163,.28), inset 0 0 60px rgba(160,128,72,.14);padding:34px 38px 32px">
+        <div data-dp="sheet" style="display:flex;flex-wrap:wrap;gap:34px 48px;align-items:flex-start">
+          <div style="flex:1;min-width:270px">
+            <span style="display:block;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;color:{{ selSoft }}">{{ sel.hand }}</span>
+            <h3 style="font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(24px,2.6cqw,32px);line-height:1.15;color:{{ selInk }};margin:6px 0 0">{{ sel.title }}</h3>
+            <span style="display:block;width:74px;height:1px;background:linear-gradient(90deg,{{ selAccent }},transparent);margin:16px 0 14px"></span>
+            <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:17px;line-height:1.75;color:{{ selSoft }};margin:0;max-width:52ch;text-wrap:pretty">{{ sel.note }}</p>
+            <div style="display:flex;flex-wrap:wrap;gap:22px;margin-top:22px">
+              <span style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:{{ selSoft }}">Pages<b style="display:block;font-family:'Playfair Display',serif;font-weight:600;font-size:17px;letter-spacing:0;color:{{ selInk }};margin-top:3px">{{ sel.pages }}</b></span>
+              <span style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:{{ selSoft }}">Fan slots<b style="display:block;font-family:'Playfair Display',serif;font-weight:600;font-size:17px;letter-spacing:0;color:{{ selInk }};margin-top:3px">{{ sel.slots }}</b></span>
+              <span style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:{{ selSoft }}">Books made<b style="display:block;font-family:'Playfair Display',serif;font-weight:600;font-size:17px;letter-spacing:0;color:{{ selInk }};margin-top:3px">{{ sel.uses }}</b></span>
+              <span style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:{{ selSoft }}">Rating<b style="display:block;font-family:'Playfair Display',serif;font-weight:600;font-size:17px;letter-spacing:0;color:{{ selInk }};margin-top:3px">{{ sel.rating }}</b></span>
+            </div>
+          </div>
+          <div style="width:250px;display:flex;flex-direction:column;gap:12px">
+            <span style="font-family:'Cinzel',serif;font-size:9.5px;letter-spacing:3px;text-transform:uppercase;color:{{ selSoft }}">What fans fill</span>
+            <sc-for list="{{ selParts }}" as="p" hint-placeholder-count="3">
+              <div style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding-bottom:9px;border-bottom:1px dashed {{ selDash }}">
+                <span style="font-family:'Playfair Display',serif;font-size:14px;color:{{ selInk }}">{{ p.k }}</span>
+                <span style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:14px;color:{{ selSoft }};text-align:right">{{ p.v }}</span>
+              </div>
+            </sc-for>
+            <span style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:14px;color:{{ selSoft }};margin-top:4px">Submitted {{ sel.submitted }}</span>
+            <span onClick="{{ goBuilder }}" style="align-self:flex-start;margin-top:4px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:{{ selInk }};border:1px solid {{ selDash }};border-radius:999px;padding:9px 18px;cursor:pointer;transition:background .3s ease,color .3s ease" style-hover="background:{{ selInk }};color:#F6EBD4">Start a book</span>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isReviews }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:30px 0 60px;display:flex;flex-direction:column;gap:14px">
+        <sc-for list="{{ reviews }}" as="rv" hint-placeholder-count="4">
+          <div onClick="{{ rv.tap }}" style="border:1px solid rgba(217,201,163,.18);border-radius:12px;background:rgba(217,201,163,.03);cursor:pointer;transition:border-color .25s ease,background .25s ease" style-hover="border-color:rgba(217,201,163,.42);background:rgba(217,201,163,.06)">
+            <div style="display:flex;align-items:center;gap:16px;padding:16px 20px">
+              <span style="width:38px;height:38px;flex:none;border-radius:999px;background:{{ rv.avatar }};display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:15px;color:#171204">{{ rv.initial }}</span>
+              <div style="flex:1;min-width:0">
+                <span style="font-family:'Playfair Display',serif;font-size:15px">{{ rv.fan }}</span>
+                <p style="font-size:11px;color:#8d8579;margin:4px 0 0">{{ rv.blueprint }} · {{ rv.date }}</p>
+              </div>
+              <span style="font-family:'Cinzel',serif;font-size:12px;letter-spacing:2px;color:#D9C9A3;white-space:nowrap">{{ rv.stars }}</span>
+              <span style="font-size:15px;color:#8d8579;width:16px;text-align:center;flex:none">{{ rv.arrow }}</span>
+            </div>
+            <sc-if value="{{ rv.open }}" hint-placeholder-val="{{ false }}">
+              <div style="padding:0 20px 20px 74px;display:flex;flex-direction:column;gap:14px">
+                <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;line-height:1.75;color:#D8D2C6;margin:0;max-width:64ch;text-wrap:pretty">{{ rv.words }}</p>
+                <sc-if value="{{ rv.hasReply }}" hint-placeholder-val="{{ false }}">
+                  <div style="border-left:1px solid rgba(217,201,163,.35);padding-left:16px">
+                    <span style="font-size:9.5px;letter-spacing:2px;text-transform:uppercase;color:#8d8579">Designer replied</span>
+                    <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;line-height:1.7;color:#B8B2A4;margin:8px 0 0;max-width:60ch">{{ rv.reply }}</p>
+                  </div>
+                </sc-if>
+              </div>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isModeration }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:30px 0 20px;display:flex;align-items:baseline;gap:14px;flex-wrap:wrap">
+        <span style="font-family:'Cinzel',serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#D9C9A3">Submission queue</span>
+        <span style="font-size:11px;color:#8d8579">{{ pendingCount }} awaiting a decision</span>
+      </div>
+      <div style="padding-bottom:60px;display:flex;flex-direction:column;gap:12px">
+        <sc-for list="{{ queue }}" as="q" hint-placeholder-count="4">
+          <div data-dp="modrow" style="display:flex;align-items:center;gap:18px;border:1px solid {{ q.ring }};border-radius:12px;padding:16px 20px;background:{{ q.bg }};transition:border-color .25s ease">
+            <span style="width:44px;height:56px;flex:none;border-radius:5px;background:{{ q.swatch }};border:1px solid rgba(217,201,163,.28)"></span>
+            <div style="flex:1;min-width:0">
+              <span style="font-family:'Playfair Display',serif;font-size:15px">{{ q.title }}</span>
+              <p style="font-size:11px;color:#8d8579;margin:4px 0 0">{{ q.designer }} · {{ q.musical }} · {{ q.pages }} pages · {{ q.slots }} fan slots</p>
+              <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;color:#B8B2A4;margin:8px 0 0;max-width:58ch;text-wrap:pretty">{{ q.note }}</p>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;flex:none">
+              <sc-if value="{{ q.decided }}" hint-placeholder-val="{{ false }}">
+                <span style="font-family:'Cinzel',serif;font-size:9.5px;letter-spacing:2.5px;text-transform:uppercase;color:{{ q.stateInk }};border:1px solid {{ q.stateLine }};border-radius:999px;padding:8px 16px">{{ q.state }}</span>
+                <span onClick="{{ q.undo }}" style="font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#8d8579;cursor:pointer;padding:6px" style-hover="color:#D9C9A3">Undo</span>
+              </sc-if>
+              <sc-if value="{{ q.pending }}" hint-placeholder-val="{{ true }}">
+                <span onClick="{{ q.reject }}" style="font-family:'Cinzel',serif;font-size:9.5px;letter-spacing:2.5px;text-transform:uppercase;color:#C88A8A;border:1px solid rgba(200,138,138,.4);border-radius:999px;padding:9px 16px;cursor:pointer;white-space:nowrap;transition:background .3s ease,color .3s ease" style-hover="background:#C88A8A;color:#1A0F0F">Send back</span>
+                <span onClick="{{ q.approve }}" style="font-family:'Cinzel',serif;font-size:9.5px;letter-spacing:2.5px;text-transform:uppercase;color:#171204;background:#D9C9A3;border:1px solid #D9C9A3;border-radius:999px;padding:9px 16px;cursor:pointer;white-space:nowrap;transition:opacity .3s ease" style-hover="opacity:.82">Publish</span>
+              </sc-if>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1200,&quot;height&quot;:900},&quot;onNavigate&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(page: string) =&gt; void&quot;},&quot;frameHeight&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;string&quot;},&quot;isAdmin&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;designerName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Meg G.&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  state = { tab: 'blueprints', pick: 0, open: null, decisions: {} };
+  renderVals() {
+    const st = this.state;
+    const isAdmin = this.props.isAdmin ?? true;
+    const palettes = {
+      phantom: { paper: 'linear-gradient(168deg,#F4EFE4 0%,#E9E4DA 52%,#DAD6CE 100%)', ink: '#1C2033', soft: '#5B6076', accent: '#8C93AC', dash: 'rgba(92,96,118,.4)', swatch: 'linear-gradient(160deg,#2A2E44,#12141F)' },
+      cats: { paper: 'linear-gradient(168deg,#F8EFD8 0%,#F0E1BE 52%,#E4CFA2 100%)', ink: '#31240C', soft: '#7A6132', accent: '#B98F3A', dash: 'rgba(122,97,50,.4)', swatch: 'linear-gradient(160deg,#3A2C0F,#171004)' },
+      lesmis: { paper: 'linear-gradient(168deg,#F5E9E2 0%,#EBDAD2 52%,#DCC6BD 100%)', ink: '#2A1013', soft: '#7A4048', accent: '#A9525E', dash: 'rgba(122,64,72,.4)', swatch: 'linear-gradient(160deg,#3A171B,#160809)' }
+    };
+    const states = {
+      live: { label: 'Live', ink: '#D9C9A3', line: 'rgba(217,201,163,.5)' },
+      review: { label: 'In review', ink: '#C6B7D8', line: 'rgba(198,183,216,.45)' },
+      sent: { label: 'Sent back', ink: '#C88A8A', line: 'rgba(200,138,138,.45)' }
+    };
+    const bps = [
+      { title: 'Music of the Night', musical: 'Phantom', bp: 'phantom', state: 'live', uses: '1,208', pages: 6, slots: 9, rating: '4.9', submitted: 'Mar 2026', hand: 'for the night the chandelier rose', note: 'A six-page spread built around one full-bleed stage photograph, with the stub and programme tucked along the gutter. Fans fill nine slots; every rule and title stays pinned.', parts: [{ k: 'Stage photo', v: 'Full bleed' }, { k: 'Ticket stub', v: 'Angled frame' }, { k: 'Letter lines', v: '4 ruled' }] },
+      { title: 'The Masquerade', musical: 'Phantom', bp: 'phantom', state: 'live', uses: '644', pages: 8, slots: 14, rating: '4.8', submitted: 'Jan 2026', hand: 'a whole ballroom, page by page', note: 'Eight pages of costume plates with gold-ruled captions. Made for fans who photograph everything and want somewhere to put it all.', parts: [{ k: 'Costume plates', v: '10 frames' }, { k: 'Mask cutout', v: 'Masked shape' }, { k: 'Caption lines', v: '10 ruled' }] },
+      { title: 'Jellicle Moon', musical: 'Cats', bp: 'cats', state: 'review', uses: '—', pages: 5, slots: 7, rating: '—', submitted: 'Aug 4, 2026', hand: 'submitted last week, still waiting', note: 'A moonlit cover page and three square-grid spreads. Awaiting a moderator decision before it can appear in the blueprint gallery.', parts: [{ k: 'Moon cover', v: 'Circle mask' }, { k: 'Square grid', v: '6 photos' }, { k: 'Caption lines', v: '6 ruled' }] },
+      { title: 'One Day More', musical: 'Les Misérables', bp: 'lesmis', state: 'sent', uses: '—', pages: 4, slots: 6, rating: '—', submitted: 'Jul 19, 2026', hand: 'sent back for one crowded page', note: 'Moderator note: the letter page leaves fans too little room — widen the ruled lines and resubmit. Everything else was approved as drawn.', parts: [{ k: 'Letter page', v: 'Needs room' }, { k: 'Barricade photo', v: 'Approved' }, { k: 'Signature line', v: 'Approved' }] }
+    ];
+    const sel = bps[st.pick] || bps[0];
+    const pal = palettes[sel.bp];
+    const tabDefs = [{ id: 'blueprints', label: 'Blueprints' }, { id: 'reviews', label: 'Reviews' }];
+    if (isAdmin) tabDefs.push({ id: 'moderation', label: 'Moderation' });
+    const tab = tabDefs.some(t => t.id === st.tab) ? st.tab : 'blueprints';
+    const toggle = key => () => this.setState(s => ({ open: s.open === key ? null : key }));
+    const queueRaw = [
+      { title: 'Jellicle Moon', designer: 'Meg G.', musical: 'Cats', bp: 'cats', pages: 5, slots: 7, note: 'Moonlit cover with a circular mask; three square grids beneath. Clean margins, nothing overlaps the gutter.' },
+      { title: 'Stage Door, 11pm', designer: 'Raoul V.', musical: 'Phantom', bp: 'phantom', pages: 3, slots: 5, note: 'A short book for one night only — a rose, a stub, and four ruled lines for what was said at the door.' },
+      { title: 'Barricade Letters', designer: 'Éponine T.', musical: 'Les Misérables', bp: 'lesmis', pages: 6, slots: 11, note: 'Six letter pages with pressed-flower frames. Two pages sit very close to the trim edge.' },
+      { title: 'Overture', designer: 'Carlotta B.', musical: 'Phantom', bp: 'phantom', pages: 4, slots: 8, note: 'A quiet opener: one wide photograph per page and a single handwritten line beneath each.' }
+    ];
+    const decide = (i, verdict) => () => this.setState(s => ({ decisions: { ...s.decisions, [i]: verdict } }));
+    const undo = i => () => this.setState(s => { const d = { ...s.decisions }; delete d[i]; return { decisions: d }; });
+    const queue = queueRaw.map((q, i) => {
+      const v = st.decisions[i];
+      const sd = v === 'approve' ? states.live : v === 'reject' ? states.sent : null;
+      return {
+        ...q, swatch: palettes[q.bp].swatch,
+        pending: !v, decided: !!v,
+        state: v === 'approve' ? 'Published' : v === 'reject' ? 'Sent back' : '',
+        stateInk: sd ? sd.ink : '#D9C9A3', stateLine: sd ? sd.line : 'rgba(217,201,163,.4)',
+        ring: v ? 'rgba(217,201,163,.12)' : 'rgba(217,201,163,.24)',
+        bg: v ? 'transparent' : 'rgba(217,201,163,.04)',
+        approve: decide(i, 'approve'), reject: decide(i, 'reject'), undo: undo(i)
+      };
+    });
+    const nav = this.props.onNavigate;
+    return {
+      onNavigate: nav,
+      frameHeight: this.props.frameHeight ?? '100vh',
+      designerName: this.props.designerName ?? 'Meg G.',
+      goStudio: () => nav && nav('Designer Template Studio'),
+      goBuilder: () => nav && nav('Scrapbook Builder'),
+      tabs: tabDefs.map(t => ({ label: t.label, color: tab === t.id ? '#F5F0E8' : '#8E968A', border: tab === t.id ? '#D9C9A3' : 'transparent', pick: () => this.setState({ tab: t.id }) })),
+      isBlueprints: tab === 'blueprints', isReviews: tab === 'reviews', isModeration: tab === 'moderation',
+      blueprints: bps.map((b, i) => ({
+        ...b, swatch: palettes[b.bp].swatch,
+        state: states[b.state].label, stateInk: states[b.state].ink, stateLine: states[b.state].line,
+        ring: st.pick === i ? '#D9C9A3' : 'rgba(217,201,163,.2)',
+        choose: () => this.setState({ pick: i })
+      })),
+      sel, selParts: sel.parts,
+      selPaper: pal.paper, selInk: pal.ink, selSoft: pal.soft, selAccent: pal.accent, selDash: pal.dash,
+      reviews: [
+        { fan: 'Christine D.', initial: 'C', blueprint: 'Music of the Night', date: 'Aug 2, 2026', rating: 5, avatar: 'linear-gradient(135deg,#E4D6AE,#B79B62)', words: 'The gutter frame held my stub exactly as it was creased. I have made four books from this blueprint and each one still feels like mine rather than a template.', reply: 'Thank you — the gutter frame was the hardest part to get right. Widened it slightly in the last revision because of notes like yours.' },
+        { fan: 'Raoul V.', initial: 'R', blueprint: 'The Masquerade', date: 'Jul 28, 2026', rating: 5, avatar: 'linear-gradient(135deg,#C9C2D8,#7E7794)', words: 'Ten frames sounds like a lot until you get home with forty photographs. The caption rules are the right length for a sentence, not an essay.', reply: '' },
+        { fan: 'Meg B.', initial: 'M', blueprint: 'Music of the Night', date: 'Jul 12, 2026', rating: 4, avatar: 'linear-gradient(135deg,#D8CBB4,#9C8A67)', words: 'Beautiful on a laptop, a little tight on a phone — the letter lines run close together when the page narrows. Still the one I reach for.', reply: 'Noted, and fixed in the version going out this month: the ruled lines now breathe at small sizes.' },
+        { fan: 'Anon.', initial: 'A', blueprint: 'The Masquerade', date: 'Jun 30, 2026', rating: 5, avatar: 'linear-gradient(135deg,#B8B2A4,#77705F)', words: 'I filled the whole thing on the train home. Never once had to think about where something should go.', reply: '' }
+      ].map((r, i) => ({
+        ...r, stars: '★★★★★'.slice(0, r.rating) + '☆☆☆☆☆'.slice(0, 5 - r.rating),
+        hasReply: !!r.reply, open: st.open === 'rv:' + i, arrow: st.open === 'rv:' + i ? '−' : '+', tap: toggle('rv:' + i)
+      })),
+      queue,
+      pendingCount: queue.filter(q => q.pending).length
+    };
+  }
+}
+
+</script>
+</body>
+</html>

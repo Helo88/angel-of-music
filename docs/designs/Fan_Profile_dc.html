@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&amp;family=Cormorant+Garamond:ital,wght@1,400;1,500&amp;family=Inter:wght@300;400;500;600&amp;family=Cinzel:wght@400;500&amp;display=swap" rel="stylesheet" />
+<script src="./image-slot.js"></script>
+<style>
+@keyframes fpFade{from{opacity:0}to{opacity:1}}
+@keyframes fpSlide{from{transform:translateX(40px);opacity:0}to{transform:none;opacity:1}}
+[data-fp="edit"]:hover{background:rgba(255,255,255,.4)}
+[data-fp="edit"]:focus{outline:none;background:rgba(255,255,255,.55)}
+@container (max-width: 860px){
+  [data-fp="head"]{flex-direction:column !important;text-align:center !important;gap:16px !important}
+  [data-fp="stats"]{justify-content:center !important}
+}
+@container (max-width: 620px){
+  [data-fp="pad"]{padding-left:16px !important;padding-right:16px !important}
+  [data-fp="tabs"]{overflow-x:auto !important;scrollbar-width:none !important}
+  [data-fp="tabs"]::-webkit-scrollbar{display:none !important}
+  [data-fp="grid"]{grid-template-columns:repeat(2,1fr) !important}
+  [data-fp="keep"]{padding:26px 22px !important}
+  [data-fp="sheet"]{padding:22px 18px 50px !important}
+  [data-fp="spread"]{grid-template-columns:1fr !important}
+}
+</style>
+</helmet>
+<div style="container-type:inline-size;min-height:100%;background:#100E0B;color:#F5F0E8;font-family:'Inter',sans-serif;font-weight:300">
+  <dc-import name="SiteNav" style="position:sticky;top:0;z-index:95" onNavigate="{{ onNavigate }}" frameHeight="{{ frameHeight }}" isLoggedIn="{{ true }}" isAngelOfMonth="{{ true }}" hint-size="100%,96px"></dc-import>
+
+  <div data-fp="pad" style="max-width:1160px;margin:0 auto;padding:44px 30px 0">
+    <div data-fp="head" style="display:flex;align-items:center;gap:22px">
+      <span style="position:relative;width:88px;height:88px;border-radius:999px;flex:none;background:linear-gradient(135deg,#E4D6AE,#B79B62);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:600;font-size:30px;color:#171204">C
+        <sc-if value="{{ isAngel }}" hint-placeholder-val="{{ true }}">
+          <span style="position:absolute;top:-8px;right:-4px;font-size:20px" title="Angel of the Month">👑</span>
+        </sc-if>
+      </span>
+      <div style="min-width:0">
+        <h1 style="font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(24px,3cqw,32px);margin:0">Christine D.</h1>
+        <p style="font-size:12px;color:#8d8579;letter-spacing:1px;margin:6px 0 0">Fan · joined Sept 2024</p>
+        <div data-fp="stats" style="display:flex;gap:22px;margin-top:14px">
+          <span style="font-size:11px;letter-spacing:1.5px;color:#B8B2A4"><b style="color:#D9C9A3">3</b> tributes</span>
+          <span style="font-size:11px;letter-spacing:1.5px;color:#B8B2A4"><b style="color:#D9C9A3">5</b> scrapbooks</span>
+          <span style="font-size:11px;letter-spacing:1.5px;color:#B8B2A4"><b style="color:#D9C9A3">12</b> bookings</span>
+        </div>
+      </div>
+    </div>
+
+    <div data-fp="tabs" style="display:flex;gap:24px;border-bottom:1px solid rgba(217,201,163,.2);margin-top:34px">
+      <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="3">
+        <span onClick="{{ t.pick }}" style="font-size:10.5px;letter-spacing:2px;text-transform:uppercase;padding:12px 0;cursor:pointer;white-space:nowrap;color:{{ t.color }};border-bottom:2px solid {{ t.border }}">{{ t.label }}</span>
+      </sc-for>
+    </div>
+
+    <sc-if value="{{ isTribute }}" hint-placeholder-val="{{ true }}">
+      <div style="padding:30px 0 60px;display:flex;flex-direction:column;gap:14px">
+        <sc-for list="{{ tributes }}" as="tr" hint-placeholder-count="3">
+          <div onClick="{{ tr.tap }}" style="border:1px solid rgba(217,201,163,.18);border-radius:12px;background:rgba(217,201,163,.03);cursor:pointer;transition:border-color .25s ease,background .25s ease" style-hover="border-color:rgba(217,201,163,.42);background:rgba(217,201,163,.06)">
+            <div style="display:flex;align-items:center;gap:16px;padding:16px">
+              <span style="width:52px;height:64px;flex:none;border-radius:6px;background:{{ tr.img }};border:1px solid rgba(217,201,163,.3)"></span>
+              <div style="flex:1;min-width:0">
+                <span style="font-family:'Playfair Display',serif;font-size:15px">{{ tr.musical }}</span>
+                <p style="font-size:11px;color:#8d8579;margin:4px 0 0">{{ tr.date }} · {{ tr.status }}</p>
+              </div>
+              <sc-if value="{{ tr.won }}" hint-placeholder-val="{{ false }}">
+                <span style="font-size:18px" title="Won this contest">👑</span>
+              </sc-if>
+              <span style="font-size:15px;color:#8d8579;width:16px;text-align:center;flex:none">{{ tr.arrow }}</span>
+            </div>
+            <sc-if value="{{ tr.open }}" hint-placeholder-val="{{ false }}">
+              <div style="padding:0 18px 18px 84px;display:flex;flex-direction:column;gap:14px">
+                <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;line-height:1.7;color:#D8D2C6;margin:0;max-width:62ch;text-wrap:pretty">{{ tr.words }}</p>
+                <div style="display:flex;flex-wrap:wrap;gap:26px">
+                  <span style="font-size:10px;letter-spacing:1.6px;text-transform:uppercase;color:#8d8579">Theme<b style="display:block;font-family:'Cinzel',serif;font-weight:500;font-size:12px;letter-spacing:1px;color:#D9C9A3;margin-top:5px">{{ tr.theme }}</b></span>
+                  <span style="font-size:10px;letter-spacing:1.6px;text-transform:uppercase;color:#8d8579">Votes<b style="display:block;font-family:'Cinzel',serif;font-weight:500;font-size:12px;letter-spacing:1px;color:#D9C9A3;margin-top:5px">{{ tr.votes }}</b></span>
+                  <span style="font-size:10px;letter-spacing:1.6px;text-transform:uppercase;color:#8d8579">Placed<b style="display:block;font-family:'Cinzel',serif;font-weight:500;font-size:12px;letter-spacing:1px;color:#D9C9A3;margin-top:5px">{{ tr.place }}</b></span>
+                </div>
+              </div>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isScrap }}" hint-placeholder-val="{{ false }}">
+      <div data-fp="grid" style="padding:30px 0 22px;display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+        <sc-for list="{{ scrapbooks }}" as="sb" hint-placeholder-count="5">
+          <div onClick="{{ sb.choose }}" style="position:relative;border-radius:8px;overflow:hidden;border:1px solid {{ sb.ring }};aspect-ratio:3/4;background:linear-gradient(160deg,#221c12,#100E0B);cursor:pointer;transition:transform .3s ease,border-color .3s ease" style-hover="transform:translateY(-3px)">
+            <div style="position:absolute;inset:0;background:repeating-linear-gradient(135deg,rgba(217,201,163,.05) 0 8px,transparent 8px 16px)"></div>
+            <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(10,8,6,.9))"></div>
+            <div style="position:absolute;bottom:0;left:0;right:0;padding:10px 12px">
+              <span style="font-size:11px;color:#F5F0E8">{{ sb.title }}</span>
+              <span style="display:block;font-size:9px;color:#8d8579;margin-top:2px">{{ sb.status }}</span>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <div data-fp="keep" ref="{{ keepRef }}" style="position:relative;margin:10px 0 66px;border-radius:4px;background:linear-gradient(168deg,#F6EBD4 0%,#EFE0C4 46%,#E3D1AE 100%);box-shadow:0 22px 50px -18px rgba(0,0,0,.75), 0 0 0 1px rgba(217,201,163,.28), inset 0 0 60px rgba(160,128,72,.16);padding:34px 38px 32px">
+        <span style="position:absolute;top:-9px;left:46px;width:78px;height:20px;background:rgba(228,214,174,.5);border-left:1px solid rgba(255,255,255,.35);border-right:1px solid rgba(160,128,72,.25);transform:rotate(-2.5deg);box-shadow:0 2px 6px rgba(0,0,0,.25)"></span>
+        <span style="position:absolute;top:-9px;right:56px;width:66px;height:20px;background:rgba(228,214,174,.5);border-left:1px solid rgba(255,255,255,.35);border-right:1px solid rgba(160,128,72,.25);transform:rotate(3deg);box-shadow:0 2px 6px rgba(0,0,0,.25)"></span>
+        <div style="display:flex;flex-wrap:wrap;gap:34px 48px;align-items:flex-start">
+          <div style="flex:1;min-width:270px">
+            <span style="display:block;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;color:#8a6f42">{{ sel.hand }}</span>
+            <h3 style="font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(24px,2.6cqw,32px);line-height:1.15;color:#241a0d;margin:6px 0 0">{{ sel.title }}</h3>
+            <span style="display:block;width:74px;height:1px;background:linear-gradient(90deg,#a98c52,transparent);margin:16px 0 14px"></span>
+            <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:17px;line-height:1.75;color:#4a3a24;margin:0;max-width:52ch;text-wrap:pretty">{{ sel.note }}</p>
+            <div style="display:flex;flex-wrap:wrap;gap:22px;margin-top:22px">
+              <span style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#8a6f42">Pages<b style="display:block;font-family:'Playfair Display',serif;font-weight:600;font-size:17px;letter-spacing:0;color:#241a0d;margin-top:3px">{{ sel.pages }}</b></span>
+              <span style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#8a6f42">Visits<b style="display:block;font-family:'Playfair Display',serif;font-weight:600;font-size:17px;letter-spacing:0;color:#241a0d;margin-top:3px">{{ sel.views }}</b></span>
+              <span style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#8a6f42">Last touched<b style="display:block;font-family:'Playfair Display',serif;font-weight:600;font-size:17px;letter-spacing:0;color:#241a0d;margin-top:3px">{{ sel.updated }}</b></span>
+              <span style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#8a6f42">Status<b style="display:block;font-family:'Playfair Display',serif;font-weight:600;font-size:17px;letter-spacing:0;color:#241a0d;margin-top:3px">{{ sel.status }}</b></span>
+            </div>
+          </div>
+          <div style="width:250px;display:flex;flex-direction:column;gap:12px">
+            <span style="font-family:'Cinzel',serif;font-size:9.5px;letter-spacing:3px;text-transform:uppercase;color:#8a6f42">Tucked inside</span>
+            <sc-for list="{{ selKeepsakes }}" as="k" hint-placeholder-count="3">
+              <div style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding-bottom:9px;border-bottom:1px dashed rgba(138,111,66,.35)">
+                <span style="font-family:'Playfair Display',serif;font-size:14px;color:#241a0d">{{ k.k }}</span>
+                <span style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:14px;color:#6b563a;text-align:right">{{ k.v }}</span>
+              </div>
+            </sc-for>
+            <span style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:14px;color:#6b563a;margin-top:4px">Blueprint · {{ selBlueprint }}</span>
+            <span onClick="{{ openBook }}" style="align-self:flex-start;margin-top:4px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:#3b2c18;border:1px solid rgba(59,44,24,.4);border-radius:999px;padding:9px 18px;cursor:pointer;transition:background .3s ease,color .3s ease" style-hover="background:#3b2c18;color:#F6EBD4">Open the book</span>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isBooking }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:30px 0 60px;display:flex;flex-direction:column;gap:12px">
+        <sc-for list="{{ bookings }}" as="bk" hint-placeholder-count="4">
+          <div onClick="{{ bk.tap }}" style="border:1px solid rgba(217,201,163,.18);border-radius:12px;cursor:pointer;transition:border-color .25s ease,background .25s ease" style-hover="border-color:rgba(217,201,163,.42);background:rgba(217,201,163,.04)">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 20px">
+              <div>
+                <span style="font-family:'Playfair Display',serif;font-size:15px">{{ bk.musical }}</span>
+                <p style="font-size:11px;color:#8d8579;margin:4px 0 0">{{ bk.venue }} · {{ bk.date }}</p>
+              </div>
+              <div style="display:flex;align-items:center;gap:14px">
+                <span style="font-size:9.5px;letter-spacing:2px;text-transform:uppercase;color:#D9C9A3;border:1px solid rgba(217,201,163,.3);border-radius:999px;padding:6px 12px;white-space:nowrap">{{ bk.seats }} seats</span>
+                <span style="font-size:15px;color:#8d8579;width:16px;text-align:center">{{ bk.arrow }}</span>
+              </div>
+            </div>
+            <sc-if value="{{ bk.open }}" hint-placeholder-val="{{ false }}">
+              <div style="padding:0 20px 18px;display:flex;flex-wrap:wrap;gap:26px;border-top:1px solid rgba(217,201,163,.12);margin:0 20px;padding-top:16px">
+                <span style="font-size:10px;letter-spacing:1.6px;text-transform:uppercase;color:#8d8579">Seats<b style="display:block;font-family:'Cinzel',serif;font-weight:500;font-size:12px;letter-spacing:1px;color:#D9C9A3;margin-top:5px">{{ bk.row }}</b></span>
+                <span style="font-size:10px;letter-spacing:1.6px;text-transform:uppercase;color:#8d8579">Curtain<b style="display:block;font-family:'Cinzel',serif;font-weight:500;font-size:12px;letter-spacing:1px;color:#D9C9A3;margin-top:5px">{{ bk.time }}</b></span>
+                <span style="font-size:10px;letter-spacing:1.6px;text-transform:uppercase;color:#8d8579">Order<b style="display:block;font-family:'Cinzel',serif;font-weight:500;font-size:12px;letter-spacing:1px;color:#D9C9A3;margin-top:5px">{{ bk.order }}</b></span>
+                <span style="font-size:10px;letter-spacing:1.6px;text-transform:uppercase;color:#8d8579">Paid<b style="display:block;font-family:'Cinzel',serif;font-weight:500;font-size:12px;letter-spacing:1px;color:#D9C9A3;margin-top:5px">{{ bk.paid }}</b></span>
+              </div>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+  </div>
+
+  <sc-if value="{{ dlgOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;inset:0;z-index:140;display:flex;justify-content:flex-end;animation:fpFade .3s ease both">
+      <div onClick="{{ closeBook }}" style="position:absolute;inset:0;background:rgba(8,6,4,.7);backdrop-filter:blur(4px)"></div>
+      <div data-fp="sheet" style="position:relative;width:min(800px,94%);height:100%;overflow-y:auto;background:{{ bpPaper }};box-shadow:-30px 0 80px -30px rgba(0,0,0,.8);animation:fpSlide .42s cubic-bezier(.22,1,.36,1) both;padding:30px 38px 60px;box-sizing:border-box">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:20px">
+          <div>
+            <span style="font-family:'Cinzel',serif;font-size:9.5px;letter-spacing:3px;text-transform:uppercase;color:{{ bpSoft }}">{{ bpName }} blueprint</span>
+            <h2 data-fp="edit" contentEditable="{{ true }}" suppressContentEditableWarning="{{ true }}" style="font-family:'Playfair Display',serif;font-weight:700;font-size:30px;line-height:1.15;color:{{ bpInk }};margin:8px 0 0;border-radius:4px;padding:2px 6px;margin-left:-6px;transition:background .25s ease">{{ bpTitle }}</h2>
+            <span style="display:block;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:17px;color:{{ bpSoft }};margin-top:6px">{{ bpHand }}</span>
+          </div>
+          <span onClick="{{ closeBook }}" style="font-size:20px;color:{{ bpSoft }};cursor:pointer;padding:4px 8px;flex:none">✕</span>
+        </div>
+        <span style="display:block;width:100%;height:1px;background:linear-gradient(90deg,{{ bpAccent }},transparent);margin:22px 0 26px"></span>
+
+        <sc-if value="{{ isPhantom }}" hint-placeholder-val="{{ false }}">
+          <div data-fp="spread" style="display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:20px">
+            <div style="position:relative;width:100%;min-width:0;box-sizing:border-box;height:400px;background:{{ bpTint }};padding:12px;box-shadow:0 14px 34px -18px rgba(0,0,0,.5)">
+              <image-slot style="width:100%;height:100%" id="fp-ph-1" shape="rect" placeholder="Stage photo"></image-slot>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:20px;min-width:0">
+              <div style="position:relative;width:100%;min-width:0;box-sizing:border-box;height:190px;background:{{ bpTint }};padding:10px;box-shadow:0 14px 34px -18px rgba(0,0,0,.5)">
+                <image-slot style="width:100%;height:100%" id="fp-ph-2" shape="rect" placeholder="Keepsake"></image-slot>
+              </div>
+              <div style="position:relative;width:100%;min-width:0;box-sizing:border-box;height:190px;background:{{ bpTint }};padding:10px;box-shadow:0 14px 34px -18px rgba(0,0,0,.5)">
+                <image-slot style="width:100%;height:100%" id="fp-ph-3" shape="rect" placeholder="Ticket stub"></image-slot>
+              </div>
+            </div>
+          </div>
+          <p data-fp="edit" contentEditable="{{ true }}" suppressContentEditableWarning="{{ true }}" style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:19px;line-height:1.8;color:{{ bpInk }};margin:26px 0 0;padding:10px 12px;margin-left:-12px;border-radius:4px;max-width:56ch;text-wrap:pretty;transition:background .25s ease">Write here about the night the chandelier rose…</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:26px">
+            <span data-fp="edit" contentEditable="{{ true }}" suppressContentEditableWarning="{{ true }}" style="font-family:'Playfair Display',serif;font-size:15px;color:{{ bpInk }};border-bottom:1px dashed {{ bpAccent }};padding:8px 6px;transition:background .25s ease">Seat & date</span>
+            <span data-fp="edit" contentEditable="{{ true }}" suppressContentEditableWarning="{{ true }}" style="font-family:'Playfair Display',serif;font-size:15px;color:{{ bpInk }};border-bottom:1px dashed {{ bpAccent }};padding:8px 6px;transition:background .25s ease">Who I was with</span>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isCats }}" hint-placeholder-val="{{ false }}">
+          <div style="position:relative;width:100%;min-width:0;box-sizing:border-box;height:250px;background:{{ bpTint }};padding:12px;box-shadow:0 14px 34px -18px rgba(0,0,0,.5)">
+            <image-slot style="width:100%;height:100%" id="fp-ca-1" shape="rect" placeholder="Moonlit shot"></image-slot>
+          </div>
+          <p data-fp="edit" contentEditable="{{ true }}" suppressContentEditableWarning="{{ true }}" style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:19px;line-height:1.8;color:{{ bpInk }};margin:24px 0 0;padding:10px 12px;margin-left:-12px;border-radius:4px;max-width:56ch;text-wrap:pretty;transition:background .25s ease">A line about the moment Grizabella climbed…</p>
+          <div data-fp="spread" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:26px">
+            <div style="display:flex;flex-direction:column;gap:10px;min-width:0">
+              <div style="position:relative;width:100%;min-width:0;box-sizing:border-box;aspect-ratio:1;background:{{ bpTint }};padding:9px;box-shadow:0 14px 30px -18px rgba(0,0,0,.5)"><image-slot style="width:100%;height:100%" id="fp-ca-2" shape="rect" placeholder="Photo"></image-slot></div>
+              <span data-fp="edit" contentEditable="{{ true }}" suppressContentEditableWarning="{{ true }}" style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;color:{{ bpSoft }};padding:4px 6px;border-radius:3px">caption…</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px;min-width:0">
+              <div style="position:relative;width:100%;min-width:0;box-sizing:border-box;aspect-ratio:1;background:{{ bpTint }};padding:9px;box-shadow:0 14px 30px -18px rgba(0,0,0,.5)"><image-slot style="width:100%;height:100%" id="fp-ca-3" shape="rect" placeholder="Photo"></image-slot></div>
+              <span data-fp="edit" contentEditable="{{ true }}" suppressContentEditableWarning="{{ true }}" style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;color:{{ bpSoft }};padding:4px 6px;border-radius:3px">caption…</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px;min-width:0">
+              <div style="position:relative;width:100%;min-width:0;box-sizing:border-box;aspect-ratio:1;background:{{ bpTint }};padding:9px;box-shadow:0 14px 30px -18px rgba(0,0,0,.5)"><image-slot style="width:100%;height:100%" id="fp-ca-4" shape="rect" placeholder="Photo"></image-slot></div>
+              <span data-fp="edit" contentEditable="{{ true }}" suppressContentEditableWarning="{{ true }}" style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;color:{{ bpSoft }};padding:4px 6px;border-radius:3px">caption…</span>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isLesmis }}" hint-placeholder-val="{{ false }}">
+          <div data-fp="spread" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px">
+            <div style="position:relative;width:100%;min-width:0;box-sizing:border-box;height:230px;background:{{ bpTint }};padding:11px;box-shadow:0 14px 34px -18px rgba(0,0,0,.5)"><image-slot style="width:100%;height:100%" id="fp-lm-1" shape="rect" placeholder="Photo"></image-slot></div>
+            <div style="position:relative;width:100%;min-width:0;box-sizing:border-box;height:230px;background:{{ bpTint }};padding:11px;box-shadow:0 14px 34px -18px rgba(0,0,0,.5)"><image-slot style="width:100%;height:100%" id="fp-lm-2" shape="rect" placeholder="Photo"></image-slot></div>
+          </div>
+          <div style="margin-top:26px;padding:24px 26px;background:rgba(255,255,255,.32);box-shadow:0 12px 30px -20px rgba(0,0,0,.5)">
+            <span style="font-family:'Cinzel',serif;font-size:9.5px;letter-spacing:3px;text-transform:uppercase;color:{{ bpSoft }}">A letter</span>
+            <p data-fp="edit" contentEditable="{{ true }}" suppressContentEditableWarning="{{ true }}" style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:19px;line-height:1.85;color:{{ bpInk }};margin:12px 0 0;padding:6px;margin-left:-6px;border-radius:4px;text-wrap:pretty;transition:background .25s ease">Dear Éponine, — write your letter here…</p>
+          </div>
+          <div data-fp="spread" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:20px;margin-top:26px;align-items:end">
+            <div style="position:relative;width:100%;min-width:0;box-sizing:border-box;height:200px;background:{{ bpTint }};padding:11px;box-shadow:0 14px 34px -18px rgba(0,0,0,.5)"><image-slot style="width:100%;height:100%" id="fp-lm-3" shape="rect" placeholder="Keepsake"></image-slot></div>
+            <span data-fp="edit" contentEditable="{{ true }}" suppressContentEditableWarning="{{ true }}" style="font-family:'Playfair Display',serif;font-size:16px;color:{{ bpInk }};border-bottom:1px dashed {{ bpAccent }};padding:10px 6px;transition:background .25s ease">Signed, and dated…</span>
+          </div>
+        </sc-if>
+
+        <span style="display:block;font-family:'Cinzel',serif;font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:{{ bpSoft }};margin-top:34px;opacity:.8">Drag photographs onto any frame · click any line to write</span>
+      </div>
+    </div>
+  </sc-if>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1200,&quot;height&quot;:900},&quot;onNavigate&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(page: string) =&gt; void&quot;},&quot;frameHeight&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  state = { tab: 'tribute', open: null, pick: 0, dlg: null };
+  scrollToKeepsake() {
+    requestAnimationFrame(() => {
+      const el = this.keep;
+      if (!el) return;
+      let sc = el.parentElement;
+      while (sc) {
+        const oy = getComputedStyle(sc).overflowY;
+        if ((oy === 'auto' || oy === 'scroll') && sc.scrollHeight > sc.clientHeight + 4) break;
+        sc = sc.parentElement;
+      }
+      const box = el.getBoundingClientRect();
+      if (sc) {
+        const host = sc.getBoundingClientRect();
+        sc.scrollTo({ top: sc.scrollTop + box.top - host.top - 90, behavior: 'smooth' });
+      } else {
+        window.scrollTo({ top: window.scrollY + box.top - 90, behavior: 'smooth' });
+      }
+    });
+  }
+  renderVals() {
+    const st = this.state;
+    const toggle = (key) => () => this.setState(s => ({ open: s.open === key ? null : key }));
+    const books = [
+      { title: 'Opening night', bp: 'phantom', status: 'Published', pages: 14, updated: 'Aug 2, 2026', views: '1,208', note: 'The stub is still creased where I held it all through the overture. I pressed the stage-door rose that same night — it has kept more colour than I expected.', hand: 'the night the chandelier rose', keepsakes: [{ k: 'Ticket stub', v: 'Stalls F 12' }, { k: 'Programme', v: 'Signed, Act II' }, { k: 'Pressed rose', v: 'Stage door' }] },
+      { title: 'Backstage keepsakes', bp: 'cats', status: 'Draft', pages: 6, updated: 'Jul 28, 2026', views: '—', note: 'Two spreads still empty, waiting on the polaroid from the wings. I keep the call sheet folded in four, exactly as it was handed to me.', hand: 'still unfinished, on purpose', keepsakes: [{ k: 'Call sheet', v: 'Folded in four' }, { k: 'Polaroid', v: 'From the wings' }, { k: 'Rehearsal note', v: 'In blue pencil' }] },
+      { title: 'The masquerade', bp: 'phantom', status: 'Published', pages: 22, updated: 'Jul 11, 2026', views: '3,644', note: 'Every costume from the Act II ball, drawn and labelled. The most-visited book I have made — people write to ask about the gold one.', hand: 'a whole ballroom, page by page', keepsakes: [{ k: 'Costume plates', v: '14 drawn' }, { k: 'Mask sketch', v: 'Ink & gold' }, { k: 'Ballroom map', v: 'Hand-inked' }] },
+      { title: 'Rose & candle', bp: 'lesmis', status: 'Draft', pages: 3, updated: 'Jun 30, 2026', views: '—', note: 'Begun the evening the crown came. Three pages so far: a candle stub, a ribbon, and a letter I have not finished writing.', hand: 'begun the night I was crowned', keepsakes: [{ k: 'Candle stub', v: 'Burnt low' }, { k: 'Ribbon', v: 'Gold, 30cm' }, { k: 'Letter', v: 'Unfinished' }] },
+      { title: 'Curtain call', bp: 'cats', status: 'Published', pages: 11, updated: 'May 19, 2026', views: '892', note: 'Bows, bouquets, and the last note of the overture written out by ear across the final spread.', hand: 'for the last note of the night', keepsakes: [{ k: 'Bouquet ribbon', v: 'Ivory silk' }, { k: 'Final bow', v: '11 photos' }, { k: 'Overture bar', v: 'Written by ear' }] }
+    ];
+    const sel = books[st.pick] || books[0];
+    const bpDefs = {
+      phantom: { name: 'Phantom', paper: 'linear-gradient(168deg,#F4EFE4 0%,#E9E4DA 52%,#DAD6CE 100%)', ink: '#1C2033', soft: '#5B6076', accent: '#8C93AC', tint: 'rgba(140,147,172,.16)', hand: 'Music of the Night' },
+      cats:    { name: 'Cats', paper: 'linear-gradient(168deg,#F8EFD8 0%,#F0E1BE 52%,#E4CFA2 100%)', ink: '#31240C', soft: '#7A6132', accent: '#B98F3A', tint: 'rgba(185,143,58,.16)', hand: 'Jellicle Moon' },
+      lesmis:  { name: 'Les Misérables', paper: 'linear-gradient(168deg,#F5E9E2 0%,#EBDAD2 52%,#DCC6BD 100%)', ink: '#2A1013', soft: '#7A4048', accent: '#A9525E', tint: 'rgba(169,82,94,.16)', hand: 'One Day More' }
+    };
+    const bpKey = st.dlg == null ? null : (books[st.dlg] || books[0]).bp;
+    const bp = bpKey ? bpDefs[bpKey] : bpDefs.phantom;
+    const tabDefs = [{ id: 'tribute', label: 'Tribute' }, { id: 'scrapbooks', label: 'Scrapbooks' }, { id: 'bookings', label: 'Bookings' }];
+    return {
+      onNavigate: this.props.onNavigate,
+      frameHeight: this.props.frameHeight ?? '100vh',
+      isAngel: true,
+      isTribute: st.tab === 'tribute', isScrap: st.tab === 'scrapbooks', isBooking: st.tab === 'bookings',
+      tabs: tabDefs.map(t => ({ label: t.label, color: st.tab === t.id ? '#F5F0E8' : '#8E968A', border: st.tab === t.id ? '#D9C9A3' : 'transparent', pick: () => this.setState({ tab: t.id }) })),
+      tributes: [
+        { musical: 'The Phantom of the Opera', date: 'July 2026', status: 'Crowned winner', won: true, img: 'linear-gradient(160deg,#241d12,#100E0B)', votes: '2,184', theme: 'Masquerade', words: 'Wrote about the chandelier cue that stopped her breath in row F — the tribute the judges called "the truest letter of the month."', place: '1st of 96 entries' },
+        { musical: 'Les Misérables', date: 'March 2026', status: 'Submitted', won: false, img: 'linear-gradient(160deg,#241014,#150A0D)', votes: '741', theme: 'Barricade letters', words: 'A note to Éponine, written on the train home from the matinée.', place: '9th of 112 entries' },
+        { musical: 'Cats', date: 'Jan 2026', status: 'Submitted', won: false, img: 'linear-gradient(160deg,#241C0C,#141005)', votes: '312', theme: 'Jellicle moon', words: 'On seeing Grizabella ascend for the first time at nine years old.', place: '24th of 88 entries' }
+      ].map((t, i) => ({ ...t, open: st.open === 'tribute:' + i, arrow: st.open === 'tribute:' + i ? '−' : '+', tap: toggle('tribute:' + i) })),
+      scrapbooks: books.map((s, i) => ({ ...s, ring: st.pick === i ? '#D9C9A3' : 'rgba(217,201,163,.2)', choose: () => { this.setState({ pick: i }); this.scrollToKeepsake(); } })),
+      sel: sel,
+      selKeepsakes: sel.keepsakes,
+      keepRef: el => { this.keep = el; },
+      selBlueprint: bpDefs[sel.bp].name,
+      openBook: () => this.setState({ dlg: st.pick }),
+      closeBook: () => this.setState({ dlg: null }),
+      dlgOpen: st.dlg != null,
+      bpTitle: st.dlg == null ? '' : (books[st.dlg] || books[0]).title,
+      bpPaper: bp.paper, bpInk: bp.ink, bpSoft: bp.soft, bpAccent: bp.accent, bpTint: bp.tint, bpHand: bp.hand, bpName: bp.name,
+      isPhantom: bpKey === 'phantom', isCats: bpKey === 'cats', isLesmis: bpKey === 'lesmis',
+      bookings: [
+        { musical: 'The Phantom of the Opera', venue: 'Majestic Theatre', date: 'Aug 22, 2026', seats: 2, row: 'Stalls F 12–13', order: 'AOM-88213', paid: '£164.00', time: '7:30 pm' },
+        { musical: 'Les Misérables', venue: 'Imperial Theatre', date: 'Sep 4, 2026', seats: 4, row: 'Circle B 4–7', order: 'AOM-88547', paid: '£296.00', time: '2:00 pm' },
+        { musical: 'Cats', venue: 'Winter Garden', date: 'Oct 1, 2026', seats: 1, row: 'Stalls K 22', order: 'AOM-89004', paid: '£72.00', time: '7:00 pm' }
+      ].map((b, i) => ({ ...b, open: st.open === 'booking:' + i, arrow: st.open === 'booking:' + i ? '−' : '+', tap: toggle('booking:' + i) }))
+    };
+  }
+}
+
+</script>
+</body>
+</html>

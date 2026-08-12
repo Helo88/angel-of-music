@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@keyframes aomPulse{0%,100%{opacity:.5}50%{opacity:1}}
+@container (max-width: 1000px){
+  [data-b="wrap"]{grid-template-columns:1fr !important}
+  [data-b="summary"]{order:-1 !important;position:static !important}
+  [data-b="pad"]{padding-left:26px !important;padding-right:26px !important}
+  [data-b="seatmap"]{transform:scale(.86);transform-origin:top center}
+}
+@container (max-width: 620px){
+  [data-b="pad"]{padding-left:16px !important;padding-right:16px !important}
+  [data-b="dates"]{overflow-x:auto !important;scrollbar-width:none !important}
+  [data-b="dates"]::-webkit-scrollbar{display:none !important}
+  [data-b="legend"]{flex-wrap:wrap !important;gap:10px 16px !important}
+  [data-b="seatmap"]{transform:scale(.62);transform-origin:top center;margin-bottom:-90px !important}
+  [data-b="paycols"]{grid-template-columns:1fr !important}
+}
+</style>
+</helmet>
+<div style="container-type:inline-size;background:#0C0F18;color:#F5F0E8;font-family:'Inter',sans-serif;font-weight:300;min-height:100%">
+  <dc-import name="SiteNav" style="position:sticky;top:0;z-index:95" theme="phantom" frameHeight="{{ frameHeight }}" isLoggedIn="{{ true }}" hint-size="100%,96px"></dc-import>
+
+  <div data-b="pad" style="max-width:1160px;margin:0 auto;padding:34px 30px 12px">
+    <a onClick="{{ backStep }}" style="font-size:10px;letter-spacing:3px;color:#8E96A8;text-transform:uppercase;text-decoration:none;cursor:pointer" style-hover="color:#C9CFDD">{{ backLabel }}</a>
+    <div style="display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;margin-top:14px">
+      <h1 style="font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(24px,3cqw,34px)">The Phantom of the Opera</h1>
+      <span style="font-size:12px;letter-spacing:2px;color:#8E96A8">His Majesty's Theatre · London</span>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:22px">
+      <sc-for list="{{ steps }}" as="s" hint-placeholder-count="3">
+        <div style="display:flex;align-items:center;gap:8px;flex:1">
+          <span style="display:flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:999px;font-size:11px;flex:none;background:{{ s.dot }};color:{{ s.dotText }};border:1px solid {{ s.dotBorder }}">{{ s.n }}</span>
+          <span style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:{{ s.color }};white-space:nowrap">{{ s.label }}</span>
+          <div style="flex:1;height:1px;background:{{ s.line }}"></div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <sc-if value="{{ isDate }}" hint-placeholder-val="{{ true }}">
+    <div data-b="pad" style="max-width:1160px;margin:0 auto;padding:20px 30px 90px">
+      <div style="display:flex;align-items:center;gap:14px;margin:20px 0 14px">
+        <span style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:5px;color:#C9CFDD;text-transform:uppercase">Choose a date</span>
+        <div style="flex:1;height:1px;background:rgba(201,207,221,.2)"></div>
+      </div>
+      <div data-b="dates" style="display:flex;gap:10px">
+        <sc-for list="{{ dates }}" as="d" hint-placeholder-count="7">
+          <div onClick="{{ d.pick }}" style="flex:none;width:92px;padding:16px 10px;text-align:center;border-radius:10px;cursor:pointer;border:1px solid {{ d.border }};background:{{ d.bg }}">
+            <div style="font-size:9px;letter-spacing:2px;color:#8E96A8;text-transform:uppercase">{{ d.dow }}</div>
+            <div style="font-family:'Playfair Display',serif;font-size:22px;margin-top:4px">{{ d.day }}</div>
+            <div style="font-size:9px;letter-spacing:1px;color:#6E7688;margin-top:2px">{{ d.mon }}</div>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:14px;margin:34px 0 14px">
+        <span style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:5px;color:#C9CFDD;text-transform:uppercase">Choose a time</span>
+        <div style="flex:1;height:1px;background:rgba(201,207,221,.2)"></div>
+      </div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <sc-for list="{{ times }}" as="t" hint-placeholder-count="2">
+          <div onClick="{{ t.pick }}" style="padding:16px 26px;border-radius:10px;cursor:pointer;border:1px solid {{ t.border }};background:{{ t.bg }};min-width:160px">
+            <div style="font-family:'Playfair Display',serif;font-size:19px">{{ t.time }}</div>
+            <div style="font-size:11px;color:#8E96A8;margin-top:4px">from {{ t.price }}</div>
+          </div>
+        </sc-for>
+      </div>
+
+      <a onClick="{{ toSeats }}" style="display:inline-flex;align-items:center;justify-content:center;text-align:center;margin-top:38px;padding:15px 38px;font:500 12px 'Inter',sans-serif;letter-spacing:3px;text-transform:uppercase;cursor:pointer;border-radius:8px;background:linear-gradient(135deg,#E9EDF5,#A8B2C6);color:#0C0F18;opacity:{{ nextOpacity }};pointer-events:{{ nextPE }}">Choose seats</a>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isSeats }}" hint-placeholder-val="{{ false }}">
+    <div data-b="wrap" style="display:grid;grid-template-columns:1fr 340px;gap:40px;max-width:1160px;margin:0 auto;padding:20px 30px 90px">
+      <div data-b="pad" style="min-width:0">
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:22px">
+          <span style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:5px;color:#C9CFDD;text-transform:uppercase">Choose your seats</span>
+          <div style="flex:1;height:1px;background:rgba(201,207,221,.2)"></div>
+          <span style="font-size:10px;letter-spacing:2px;color:#6E7688;text-transform:uppercase">{{ dateLabel }} · {{ timeLabel }}</span>
+        </div>
+
+        <div data-b="seatmap" style="display:flex;flex-direction:column;align-items:center;gap:8px">
+          <div style="width:82%;max-width:520px;height:14px;border-radius:0 0 60px 60px;background:linear-gradient(180deg,#C9CFDD,rgba(201,207,221,.05));box-shadow:0 6px 30px rgba(201,207,221,.25);margin-bottom:22px;animation:aomPulse 6s ease-in-out infinite"></div>
+          <sc-for list="{{ seatRows }}" as="row" hint-placeholder-count="6">
+            <div style="display:flex;align-items:center;gap:10px">
+              <span style="width:16px;font-size:10px;color:#6E7688;text-align:right">{{ row.letter }}</span>
+              <div style="display:flex;gap:7px">
+                <sc-for list="{{ row.seats }}" as="seat" hint-placeholder-count="12">
+                  <div onClick="{{ seat.toggle }}" style="width:22px;height:22px;border-radius:5px 5px 8px 8px;cursor:{{ seat.cursor }};background:{{ seat.bg }};border:1px solid {{ seat.border }}"></div>
+                </sc-for>
+              </div>
+              <span style="width:16px;font-size:10px;color:#6E7688">{{ row.letter }}</span>
+            </div>
+          </sc-for>
+        </div>
+
+        <div data-b="legend" style="display:flex;gap:26px;justify-content:center;margin-top:30px">
+          <div style="display:flex;align-items:center;gap:8px"><span style="width:14px;height:14px;border-radius:4px;background:rgba(201,207,221,.14);border:1px solid rgba(201,207,221,.3);display:block"></span><span style="font-size:11px;color:#8E96A8">Available</span></div>
+          <div style="display:flex;align-items:center;gap:8px"><span style="width:14px;height:14px;border-radius:4px;background:linear-gradient(135deg,#E9EDF5,#A8B2C6);display:block"></span><span style="font-size:11px;color:#8E96A8">Selected</span></div>
+          <div style="display:flex;align-items:center;gap:8px"><span style="width:14px;height:14px;border-radius:4px;background:rgba(201,207,221,.05);border:1px solid rgba(201,207,221,.1);display:block"></span><span style="font-size:11px;color:#6E7688">Taken</span></div>
+        </div>
+      </div>
+
+      <div data-b="summary" style="position:sticky;top:112px;align-self:start;border:1px solid rgba(201,207,221,.2);border-radius:14px;padding:24px;background:linear-gradient(180deg,#131828,#0C0F18);height:fit-content">
+        <h3 style="font-family:'Playfair Display',serif;font-weight:600;font-size:18px">Your order</h3>
+        <p style="font-size:11px;color:#8E96A8;margin-top:4px">{{ dateLabel }} · {{ timeLabel }}</p>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:16px;padding-top:14px;border-top:1px solid rgba(201,207,221,.12);max-height:180px;overflow-y:auto">
+          <sc-if value="{{ hasSeats }}" hint-placeholder-val="{{ false }}">
+            <sc-for list="{{ selectedSeats }}" as="sel" hint-placeholder-count="0">
+              <div style="display:flex;justify-content:space-between;font-size:13px"><span>Seat {{ sel.id }}</span><span style="color:#C9CFDD">{{ sel.price }}</span></div>
+            </sc-for>
+          </sc-if>
+          <sc-if value="{{ noSeats }}" hint-placeholder-val="{{ true }}">
+            <p style="font-size:12px;color:#6E7688">No seats selected yet.</p>
+          </sc-if>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:16px;padding-top:14px;border-top:1px solid rgba(201,207,221,.12);font-size:15px"><span>Total</span><span style="font-family:'Playfair Display',serif;color:#C9CFDD">{{ total }}</span></div>
+        <a onClick="{{ toCheckout }}" style="display:flex;align-items:center;justify-content:center;text-align:center;margin-top:20px;padding:15px;font:500 12px 'Inter',sans-serif;letter-spacing:3px;text-transform:uppercase;cursor:pointer;border-radius:8px;background:linear-gradient(135deg,#E9EDF5,#A8B2C6);color:#0C0F18;opacity:{{ checkoutOpacity }};pointer-events:{{ checkoutPE }}">Checkout</a>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isCheckout }}" hint-placeholder-val="{{ false }}">
+    <div data-b="wrap" style="display:grid;grid-template-columns:1fr 340px;gap:40px;max-width:1160px;margin:0 auto;padding:20px 30px 90px">
+      <div data-b="pad" style="min-width:0;display:flex;flex-direction:column;gap:30px">
+        <div>
+          <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px">
+            <span style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:5px;color:#C9CFDD;text-transform:uppercase">Contact details</span>
+            <div style="flex:1;height:1px;background:rgba(201,207,221,.2)"></div>
+          </div>
+          <div data-b="paycols" style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+            <input placeholder="Full name" style="background:rgba(201,207,221,.05);border:1px solid rgba(201,207,221,.2);border-radius:8px;padding:14px 16px;color:#F5F0E8;font:400 13px 'Inter',sans-serif" />
+            <input placeholder="Email address" style="background:rgba(201,207,221,.05);border:1px solid rgba(201,207,221,.2);border-radius:8px;padding:14px 16px;color:#F5F0E8;font:400 13px 'Inter',sans-serif" />
+          </div>
+        </div>
+        <div>
+          <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px">
+            <span style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:5px;color:#C9CFDD;text-transform:uppercase">Payment</span>
+            <div style="flex:1;height:1px;background:rgba(201,207,221,.2)"></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <input placeholder="Card number" style="background:rgba(201,207,221,.05);border:1px solid rgba(201,207,221,.2);border-radius:8px;padding:14px 16px;color:#F5F0E8;font:400 13px 'Inter',sans-serif" />
+            <div data-b="paycols" style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+              <input placeholder="MM / YY" style="background:rgba(201,207,221,.05);border:1px solid rgba(201,207,221,.2);border-radius:8px;padding:14px 16px;color:#F5F0E8;font:400 13px 'Inter',sans-serif" />
+              <input placeholder="CVC" style="background:rgba(201,207,221,.05);border:1px solid rgba(201,207,221,.2);border-radius:8px;padding:14px 16px;color:#F5F0E8;font:400 13px 'Inter',sans-serif" />
+            </div>
+          </div>
+          <p style="font-size:10px;letter-spacing:1px;color:#6E7688;margin-top:14px">This is a demonstration house — no real charges will be made.</p>
+        </div>
+        <a onClick="{{ toConfirm }}" style="display:flex;align-items:center;justify-content:center;text-align:center;padding:16px;font:500 12px 'Inter',sans-serif;letter-spacing:3px;text-transform:uppercase;cursor:pointer;border-radius:8px;background:linear-gradient(135deg,#E9EDF5,#A8B2C6);color:#0C0F18;max-width:260px">Complete booking</a>
+      </div>
+      <div data-b="summary" style="position:sticky;top:112px;align-self:start;border:1px solid rgba(201,207,221,.2);border-radius:14px;padding:24px;background:linear-gradient(180deg,#131828,#0C0F18);height:fit-content">
+        <h3 style="font-family:'Playfair Display',serif;font-weight:600;font-size:18px">Order summary</h3>
+        <p style="font-size:11px;color:#8E96A8;margin-top:4px">{{ dateLabel }} · {{ timeLabel }}</p>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:16px;padding-top:14px;border-top:1px solid rgba(201,207,221,.12)">
+          <sc-for list="{{ selectedSeats }}" as="sel" hint-placeholder-count="2">
+            <div style="display:flex;justify-content:space-between;font-size:13px"><span>Seat {{ sel.id }}</span><span style="color:#C9CFDD">{{ sel.price }}</span></div>
+          </sc-for>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:16px;padding-top:14px;border-top:1px solid rgba(201,207,221,.12);font-size:15px"><span>Total</span><span style="font-family:'Playfair Display',serif;color:#C9CFDD">{{ total }}</span></div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isConfirm }}" hint-placeholder-val="{{ false }}">
+    <div data-b="pad" style="max-width:640px;margin:0 auto;padding:70px 30px 100px;text-align:center">
+      <div style="width:64px;height:64px;border-radius:999px;border:1px solid #C9CFDD;display:flex;align-items:center;justify-content:center;margin:0 auto;font-size:26px;color:#C9CFDD;box-shadow:0 0 30px rgba(201,207,221,.25)">✓</div>
+      <h1 style="font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(26px,3.4cqw,36px);margin-top:24px">Your seats are reserved</h1>
+      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:19px;color:#C9CFDD;margin-top:12px">A confirmation has been sent to your inbox.</p>
+      <div style="text-align:left;border:1px solid rgba(201,207,221,.2);border-radius:14px;padding:24px;margin-top:34px;background:linear-gradient(180deg,#131828,#0C0F18)">
+        <div style="display:flex;justify-content:space-between;font-size:13px;color:#8E96A8"><span>The Phantom of the Opera</span><span>{{ dateLabel }}</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;color:#8E96A8;margin-top:6px"><span>His Majesty's Theatre</span><span>{{ timeLabel }}</span></div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:14px">
+          <sc-for list="{{ selectedSeats }}" as="sel" hint-placeholder-count="2">
+            <span style="font-size:11px;letter-spacing:1px;padding:6px 12px;border-radius:999px;border:1px solid rgba(201,207,221,.3);color:#C9CFDD">Seat {{ sel.id }}</span>
+          </sc-for>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:18px;padding-top:14px;border-top:1px solid rgba(201,207,221,.12);font-size:15px"><span>Total paid</span><span style="font-family:'Playfair Display',serif;color:#C9CFDD">{{ total }}</span></div>
+      </div>
+      <div style="display:flex;gap:12px;justify-content:center;margin-top:34px;flex-wrap:wrap">
+        <a onClick="{{ goArchive }}" style="display:flex;align-items:center;justify-content:center;text-align:center;padding:14px 30px;font:500 11px 'Inter',sans-serif;letter-spacing:3px;text-transform:uppercase;cursor:pointer;border-radius:8px;border:1px solid rgba(201,207,221,.28);color:#C9CFDD">Explore the archive</a>
+        <a onClick="{{ goTribute }}" style="display:flex;align-items:center;justify-content:center;text-align:center;padding:14px 30px;font:500 11px 'Inter',sans-serif;letter-spacing:3px;text-transform:uppercase;cursor:pointer;border-radius:8px;background:linear-gradient(135deg,#E9EDF5,#A8B2C6);color:#0C0F18">Pay your tribute</a>
+      </div>
+    </div>
+  </sc-if>
+
+  <dc-import name="BackToTop" theme="phantom" style="position:sticky;bottom:26px;height:0;z-index:80" hint-size="0,0"></dc-import>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:1600},&quot;onNavigate&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(page: string) =&gt; void&quot;},&quot;frameHeight&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  state = {
+    step: 'date', dateIdx: 2, timeIdx: 0,
+    seats: {}
+  };
+  makeSeatRows() {
+    const rows = ['A','B','C','D','E','F'];
+    const taken = { 'B5':1,'B6':1,'C8':1,'D3':1,'D4':1,'D5':1,'F2':1 };
+    return rows.map(letter => ({
+      letter,
+      count: 12,
+      taken,
+      seatIds: Array.from({ length: 12 }, (_, i) => letter + (i + 1))
+    }));
+  }
+  toggleSeat(id, taken) {
+    if (taken) return;
+    const seats = { ...this.state.seats };
+    if (seats[id]) delete seats[id]; else {
+      if (Object.keys(seats).length >= 8) return;
+      seats[id] = true;
+    }
+    this.setState({ seats });
+  }
+  backStep() {
+    const order = ['date', 'seats', 'checkout', 'confirm'];
+    const i = order.indexOf(this.state.step);
+    if (i <= 0) { if (this.props.onNavigate) this.props.onNavigate('musical'); return; }
+    this.setState({ step: order[i - 1] });
+  }
+  renderVals() {
+    const st = this.state;
+    const dateDefs = [
+      { dow: 'Tue', day: '14', mon: 'Jul' }, { dow: 'Wed', day: '15', mon: 'Jul' },
+      { dow: 'Thu', day: '16', mon: 'Jul' }, { dow: 'Fri', day: '17', mon: 'Jul' },
+      { dow: 'Sat', day: '18', mon: 'Jul' }, { dow: 'Sun', day: '19', mon: 'Jul' },
+      { dow: 'Tue', day: '21', mon: 'Jul' }
+    ];
+    const timeDefs = [{ time: '7:30 PM', price: '£39.50' }, { time: '2:30 PM', price: '£35.00' }];
+    const dateLabel = dateDefs[st.dateIdx].dow + ' ' + dateDefs[st.dateIdx].day + ' ' + dateDefs[st.dateIdx].mon;
+    const timeLabel = timeDefs[st.timeIdx].time;
+
+    const seatRowsRaw = this.makeSeatRows();
+    const priceFor = (letter) => (['A','B'].includes(letter) ? 65 : ['C','D'].includes(letter) ? 49.5 : 39.5);
+    const selectedIds = Object.keys(st.seats);
+    const selectedSeats = selectedIds.map(id => ({ id, price: '£' + priceFor(id[0]).toFixed(2) }));
+    const total = '£' + selectedIds.reduce((sum, id) => sum + priceFor(id[0]), 0).toFixed(2);
+
+    const seatRows = seatRowsRaw.map(row => ({
+      letter: row.letter,
+      seats: row.seatIds.map(id => {
+        const taken = !!row.taken[id];
+        const selected = !!st.seats[id];
+        return {
+          cursor: taken ? 'not-allowed' : 'pointer',
+          bg: taken ? 'rgba(201,207,221,.05)' : selected ? 'linear-gradient(135deg,#E9EDF5,#A8B2C6)' : 'rgba(201,207,221,.14)',
+          border: taken ? 'rgba(201,207,221,.1)' : selected ? '#C9CFDD' : 'rgba(201,207,221,.3)',
+          toggle: () => this.toggleSeat(id, taken)
+        };
+      })
+    }));
+
+    const stepDefs = [
+      { id: 'date', n: '1', label: 'Date & time' },
+      { id: 'seats', n: '2', label: 'Seats' },
+      { id: 'checkout', n: '3', label: 'Checkout' }
+    ];
+    const order = ['date', 'seats', 'checkout', 'confirm'];
+    const curIdx = order.indexOf(st.step);
+    const steps = stepDefs.map((s, i) => {
+      const idx = order.indexOf(s.id);
+      const active = idx === curIdx;
+      const done = idx < curIdx;
+      return {
+        n: s.n, label: s.label,
+        color: active || done ? '#F5F0E8' : '#6E7688',
+        dot: active ? 'linear-gradient(135deg,#E9EDF5,#A8B2C6)' : done ? 'transparent' : 'transparent',
+        dotText: active ? '#0C0F18' : '#8E96A8',
+        dotBorder: active ? 'transparent' : 'rgba(201,207,221,.3)',
+        line: i < stepDefs.length - 1 ? (done ? '#C9CFDD' : 'rgba(201,207,221,.15)') : 'transparent'
+      };
+    });
+
+    return {
+      frameHeight: this.props.frameHeight ?? '100vh',
+      isDate: st.step === 'date', isSeats: st.step === 'seats', isCheckout: st.step === 'checkout', isConfirm: st.step === 'confirm',
+      backLabel: st.step === 'date' ? '← Back to musical' : '← Back',
+      backStep: () => this.backStep(),
+      steps,
+      dates: dateDefs.map((d, i) => ({
+        dow: d.dow, day: d.day, mon: d.mon,
+        border: st.dateIdx === i ? '#C9CFDD' : 'rgba(201,207,221,.2)',
+        bg: st.dateIdx === i ? 'rgba(201,207,221,.1)' : 'transparent',
+        pick: () => this.setState({ dateIdx: i })
+      })),
+      times: timeDefs.map((t, i) => ({
+        time: t.time, price: t.price,
+        border: st.timeIdx === i ? '#C9CFDD' : 'rgba(201,207,221,.2)',
+        bg: st.timeIdx === i ? 'rgba(201,207,221,.1)' : 'transparent',
+        pick: () => this.setState({ timeIdx: i })
+      })),
+      nextOpacity: 1, nextPE: 'auto',
+      toSeats: () => this.setState({ step: 'seats' }),
+      dateLabel, timeLabel,
+      seatRows,
+      hasSeats: selectedIds.length > 0, noSeats: selectedIds.length === 0,
+      selectedSeats, total,
+      checkoutOpacity: selectedIds.length > 0 ? 1 : 0.4,
+      checkoutPE: selectedIds.length > 0 ? 'auto' : 'none',
+      toCheckout: () => { if (selectedIds.length > 0) this.setState({ step: 'checkout' }); },
+      toConfirm: () => this.setState({ step: 'confirm' }),
+      goArchive: () => this.props.onNavigate && this.props.onNavigate('archive'),
+      goTribute: () => this.props.onNavigate && this.props.onNavigate('tribute')
+    };
+  }
+}
+
+</script>
+</body>
+</html>
